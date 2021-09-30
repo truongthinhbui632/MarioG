@@ -8,7 +8,7 @@ TMXMap::TMXMap()
 	_TileWidth = 0;
 	_TileHeight = 0;
 
-	_TileSet = NULL;
+	_TileSets.clear();
 	_Layers.clear();
 	_ObjectGroups.clear();
 	//_Cam = NULL;
@@ -23,9 +23,10 @@ TMXMap::~TMXMap()
 		delete it->second;
 	}
 
-	if (_TileSet != NULL)
+	for (std::vector<TMXTileSet*>::iterator it = _TileSets.begin(); it != _TileSets.end(); ++it)
 	{
-		delete _TileSet;
+		delete *it;
+		*it = NULL;
 	}
 
 	for (std::unordered_map<std::string, TMXObjectGroup*>::iterator it = _ObjectGroups.begin(); it != _ObjectGroups.end(); it++)
@@ -48,10 +49,11 @@ void TMXMap::SetAttributes(unsigned int width, unsigned int height, unsigned int
 	_TileHeight = tileHeight;
 }
 
-void TMXMap::SetTileSet(const TMXTileSet &tileSet)
+void TMXMap::AddTileSet(const TMXTileSet &tileSet)
 {
-	_TileSet = new TMXTileSet();
+	TMXTileSet* _TileSet = new TMXTileSet();
 	*_TileSet = tileSet;
+	_TileSets.push_back(_TileSet);
 }
 
 void TMXMap::AddLayer(const std::string &layerName, const TMXTileLayer &layer)
@@ -85,9 +87,9 @@ TMXObjectGroup* TMXMap::GetObjectGroup(const std::string &groupName) const
 	}
 }
 
-TMXTileSet* TMXMap::GetTileSet() const
+const std::vector<TMXTileSet*>& TMXMap::GetTileSet() const
 {
-	return _TileSet;
+	return _TileSets;
 }
 
 unsigned int TMXMap::GetWidth() const
@@ -154,43 +156,50 @@ void TMXMap::Render(SpriteBatch *batch)
 	unsigned int layerWidth = layer->GetWidth();
 	unsigned int layerHeight = layer->GetHeight();
 
-	Texture* texture = _TileSet->GetTexture();
-	unsigned int columns = _TileSet->GetColumns();
-	unsigned int tileSetWidth = _TileSet->GetTileWidth();
-	unsigned int tileSetHeight = _TileSet->GetTileHeight();
-
-	float x, y, rectLeft, rectTop, rectWidth, rectHeight;
-	rectWidth = tileSetWidth;
-	rectHeight = tileSetHeight;
-
-	float width = tileSetWidth * _ScaleFactor;
-	float height = tileSetHeight * _ScaleFactor;
-
-	for (unsigned int row = 0; row < layerHeight; row++)
+	for (std::vector<TMXTileSet*>::iterator it = _TileSets.begin(); it != _TileSets.end(); ++it)
 	{
-		for (unsigned int column = 0; column < layerWidth; column++)
+		TMXTileSet* _TileSet = *it;
+		Texture* texture = _TileSet->GetTexture();
+		unsigned int firstGrid = _TileSet->GetFirstGrid();
+		unsigned int margin = _TileSet->GetMargin();
+		unsigned int tileCount = _TileSet->GetTileCount();
+		unsigned int columns = _TileSet->GetColumns();
+		unsigned int tileSetWidth = _TileSet->GetTileWidth();
+		unsigned int tileSetHeight = _TileSet->GetTileHeight();
+
+		float x, y, rectLeft, rectTop, rectWidth, rectHeight;
+		rectWidth = tileSetWidth;
+		rectHeight = tileSetHeight;
+
+		float width = tileSetWidth * _ScaleFactor;
+		float height = tileSetHeight * _ScaleFactor;
+
+		for (unsigned int row = 0; row < layerHeight; row++)
 		{
-			if (data[row][column] == 0) continue;
+			for (unsigned int column = 0; column < layerWidth; column++)
+			{
+				if (data[row][column] == 0 || data[row][column] > firstGrid + tileCount) continue;
 
-			rectLeft = ((data[row][column]-1) % columns) * rectWidth;
-			rectTop = ((data[row][column]-1) / columns) * rectHeight;
-				
-			x = column*width + width / 2;
-			y = (layerHeight - 1 - row)*height + height / 2;
+				rectLeft = ((data[row][column] - firstGrid) % columns) * rectWidth;
+				rectTop = ((data[row][column] - firstGrid) / columns) * rectHeight;
 
-			////check to see if this tile is out of the scope of the camera
-			//if (_Cam != NULL)
-			//{
+				x = column * width + width / 2 + margin;
+				y = (layerHeight - 1 - row) * height + height / 2;
 
-			//	if (x + width / 2 < camPostion.x - screenWidth / 2 ||
-			//		x - width / 2 > camPostion.x + screenWidth / 2 ||
-			//		y + height / 2 < camPostion.y - screenHeight / 2 ||
-			//		y - height / 2 > camPostion.y + screenHeight / 2)
-			//		continue;
+				////check to see if this tile is out of the scope of the camera
+				//if (_Cam != NULL)
+				//{
 
-			//}
+				//	if (x + width / 2 < camPostion.x - screenWidth / 2 ||
+				//		x - width / 2 > camPostion.x + screenWidth / 2 ||
+				//		y + height / 2 < camPostion.y - screenHeight / 2 ||
+				//		y - height / 2 > camPostion.y + screenHeight / 2)
+				//		continue;
 
-			batch->Draw(*texture, x, y, rectLeft, rectTop, rectWidth, rectHeight, width, height);
+				//}
+
+				batch->Draw(*texture, x, y, rectLeft, rectTop, rectWidth, rectHeight, width, height);
+			}
 		}
 	}
 }

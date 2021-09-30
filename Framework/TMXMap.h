@@ -16,7 +16,7 @@ private:
 	unsigned int _TileWidth;
 	unsigned int _TileHeight;
 	
-	TMXTileSet *_TileSet;
+	std::vector<TMXTileSet*> _TileSets;
 	std::unordered_map<std::string, TMXTileLayer*> _Layers;
 	std::unordered_map<std::string, TMXObjectGroup*> _ObjectGroups;
 
@@ -25,7 +25,7 @@ private:
 	float _ScaleFactor;
 
 	void SetAttributes(unsigned int width, unsigned int height, unsigned int tileWidth, unsigned int tileHeight);
-	void SetTileSet(const TMXTileSet &tileSet);
+	void AddTileSet(const TMXTileSet &tileSet);
 	void AddLayer(const std::string &layerName, const TMXTileLayer &layer);
 	void AddObjectGroup(const std::string &name, const TMXObjectGroup &objectGroup);
 
@@ -44,7 +44,7 @@ public:
 	unsigned int GetTileWidth() const;
 	unsigned int GetTileHeight() const;
 
-	TMXTileSet *GetTileSet() const;
+	const std::vector<TMXTileSet*>& GetTileSet() const;
 	const std::unordered_map<std::string, TMXTileLayer*>& GetLayers() const;
 	const std::unordered_map<std::string, TMXObjectGroup*>& GetObjectGroups() const;
 

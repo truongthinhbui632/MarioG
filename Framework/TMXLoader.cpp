@@ -89,7 +89,7 @@ void TMXLoader::LoadTileSets(TMXMap* map, rapidxml::xml_node<> *parentNode, cons
 	currentNode = currentNode->first_node("tileset");
 
 	// Check if there is a tileset node
-	if (currentNode != nullptr)
+	while (currentNode != nullptr)
 	{
 		unsigned int firstGid = atoi(currentNode->first_attribute("firstgid")->value());
 		std::string name = currentNode->first_attribute("name")->value();
@@ -97,23 +97,29 @@ void TMXLoader::LoadTileSets(TMXMap* map, rapidxml::xml_node<> *parentNode, cons
 		unsigned int tileHeight = atoi(currentNode->first_attribute("tileheight")->value());
 		unsigned int tileCount = atoi(currentNode->first_attribute("tilecount")->value());
 		unsigned int columns = atoi(currentNode->first_attribute("columns")->value());
-
-		currentNode = currentNode->first_node("image");
+		unsigned int margin = 0;
+		if (currentNode->first_attribute("margin") != nullptr)
+		{
+			margin = atoi(currentNode->first_attribute("margin")->value());
+		}
+		rapidxml::xml_node<>* imageNode = currentNode->first_node("image");
 		std::string sourcePath;
 		unsigned int imageWidth;
 		unsigned int imageHeight;
-		if (currentNode != nullptr)
+		if (imageNode != nullptr)
 		{
-			sourcePath = folderPath + "/" + currentNode->first_attribute("source")->value();
-			imageWidth = atoi(currentNode->first_attribute("width")->value());
-			imageHeight = atoi(currentNode->first_attribute("height")->value());
+			sourcePath = folderPath + "/" + imageNode->first_attribute("source")->value();
+			imageWidth = atoi(imageNode->first_attribute("width")->value());
+			imageHeight = atoi(imageNode->first_attribute("height")->value());
 		}
 
 		TMXTileSet tileSet;
-		tileSet.SetAttributes(name, firstGid, tileWidth, tileHeight, tileCount, columns, sourcePath, imageWidth, imageHeight);
+		tileSet.SetAttributes(name, firstGid, margin, tileWidth, tileHeight, tileCount, columns, sourcePath, imageWidth, imageHeight);
 
-		map->SetTileSet(tileSet);
+		map->AddTileSet(tileSet);
 
+		// Move to the next tileset
+		currentNode = currentNode->next_sibling("tileset");
 	}
 }
 

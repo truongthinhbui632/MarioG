@@ -9,13 +9,15 @@ TMXTileSet::TMXTileSet()
 	_Columns = 0;
 	_ImageWidth = 0;
 	_ImageHeight = 0;
+	_Margin = 0;
 	_Texture = NULL;
 }
 
-void TMXTileSet::SetAttributes(const std::string& name, unsigned int firstGid, unsigned int tileWidth, unsigned int tileHeight,
+void TMXTileSet::SetAttributes(const std::string& name, unsigned int firstGid, unsigned int margin, unsigned int tileWidth, unsigned int tileHeight,
 	 unsigned int tileCount, unsigned int columns, const std::string& sourcePath, unsigned int imageWidth, unsigned int imageHeight)
 {
 	_FirstGid = firstGid;
+	_Margin = margin;
 	_Name = name;
 	_SourcePath = sourcePath;
 	_ImageWidth = imageWidth;
@@ -88,9 +90,14 @@ const std::string& TMXTileSet::GetSourcePath() const
 }
 
 
-unsigned int TMXTileSet::GetFirstGid() const
+unsigned int TMXTileSet::GetFirstGrid() const
 {
 	return _FirstGid;
+}
+
+unsigned int TMXTileSet::GetMargin() const
+{
+	return _Margin;
 }
 
 unsigned int TMXTileSet::GetImageWidth() const

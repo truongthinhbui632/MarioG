@@ -18,17 +18,14 @@ void PlayScene::SetBatch(SpriteBatch* batch)
 
 void PlayScene::Create()
 {
-
-
-	//sdQuadTree.Load("Resources/map3_2SDQuadTree.xml", "Resources/map3_2.tmx");
 	//load map
-	mapLoader.AddMap("map1", "Resources/mariomap1.tmx", 1);
+	mapLoader.AddMap("map1", "Resources/world1-1.tmx", 1);
 	map = mapLoader.GetMap("map1");
 
 
 	//get player position
-	Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
-	player.Create(playerRect.x, playerRect.y);
+	//Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
+	//player.Create(playerRect.x, playerRect.y);
 
 	//set cam position
 	cam.SetPosition(640/2, 480/2);
@@ -37,7 +34,7 @@ void PlayScene::Create()
 void PlayScene::HandlePhysics(float dt)
 {
 	//handle input of player
-	player.HandleInput();
+	//player.HandleInput();
 }
 
 void  PlayScene::Render()
@@ -46,7 +43,7 @@ void  PlayScene::Render()
 	batch->Begin();
 
 	//render player
-	player.Render(batch);
+	//player.Render(batch);
 
 	
 	//render map
@@ -62,23 +59,23 @@ void PlayScene::Update(float dt)
 
 	HandlePhysics(dt);
 
-	player.Update(dt);
+	//player.Update(dt);
 	
 
-	//update camera
-	if (player.GetPosition().y > cam.GetPosition().y + 150)
-	{
-		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y - 150);
-	}
-	else
-	{
-		if (player.GetPosition().y < cam.GetPosition().y - 150)
-		{
-			cam.SetPosition(cam.GetPosition().x, player.GetPosition().y + 150);
-		}
-	}
+	////update camera
+	//if (player.GetPosition().y > cam.GetPosition().y + 150)
+	//{
+	//	cam.SetPosition(cam.GetPosition().x, player.GetPosition().y - 150);
+	//}
+	//else
+	//{
+	//	if (player.GetPosition().y < cam.GetPosition().y - 150)
+	//	{
+	//		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y + 150);
+	//	}
+	//}
 
-	cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
+	//cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
 
 	//RENDER
 	Render();
