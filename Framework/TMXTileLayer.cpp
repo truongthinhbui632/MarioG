@@ -76,7 +76,7 @@ void  TMXTileLayer::TMXTileLayer::SetData(char* matrixCSV)
 	}
 
 	char* context = NULL;
-	char *separators = " \t,\n\r";
+	const char *separators = " \t,\n\r";
 
 	//get data (convert matrixCSV to int matrix)
 	char* item = strtok_s(matrixCSV, separators,&context);

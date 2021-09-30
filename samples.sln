@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05-SceneManager", "05-Scene
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "Framework\Framework.vcxproj", "{CE4BC91C-3415-4079-A90B-C224920ADB48}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mario", "Mario\Mario.vcxproj", "{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,20 @@ Global
 		{CE4BC91C-3415-4079-A90B-C224920ADB48}.Release|Win32.Build.0 = Release|Win32
 		{CE4BC91C-3415-4079-A90B-C224920ADB48}.Release|x64.ActiveCfg = Release|x64
 		{CE4BC91C-3415-4079-A90B-C224920ADB48}.Release|x64.Build.0 = Release|x64
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|Win32.Build.0 = Debug|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|x64.ActiveCfg = Debug|x64
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Debug|x64.Build.0 = Debug|x64
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|Any CPU.ActiveCfg = Release|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|Win32.ActiveCfg = Release|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|Win32.Build.0 = Release|Win32
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|x64.ActiveCfg = Release|x64
+		{AA75A8A7-7BC0-4D62-8778-D452BA5ED4BA}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

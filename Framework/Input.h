@@ -1,8 +1,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include "d3d9.h"
-#include "d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
+#include "directx/Include/d3d9.h"
+#include "directx/Include/d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
 #include<vector>
 #include "dinput.h"
 #include <algorithm>    // std::find

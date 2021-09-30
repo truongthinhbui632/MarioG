@@ -16,9 +16,11 @@
     <Filter Include="Header Files\rapidxml">
       <UniqueIdentifier>{ddb24b74-5fbd-4fc6-af4c-30707b521667}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\combinedheaders">
+      <UniqueIdentifier>{34b0f849-10f5-459f-9b61-23068c164a50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="rapidxml\manual.html">
       <Filter>Header Files\rapidxml</Filter>
     </None>
@@ -101,6 +103,33 @@
     </ClInclude>
     <ClInclude Include="rapidxml\rapidxml_utils.hpp">
       <Filter>Header Files\rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiCamera.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiConsole.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiGame.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiInput.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiMap.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiMath.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiScene.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiShape.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
+    <ClInclude Include="HanabiSprite.h">
+      <Filter>Header Files\combinedheaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "d3d9.h"
-#include "d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
+#include "directx/Include/d3d9.h"
+#include "directx/Include/d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
 
 LPDIRECT3DSURFACE9 CreateSurfaceFromFile(LPDIRECT3DDEVICE9 d3ddv, LPWSTR FilePath);
 

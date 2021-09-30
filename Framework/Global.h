@@ -1,8 +1,8 @@
 //this header contains every variable that should be use globally
 #pragma once
 
-#include "d3d9.h"
-#include "d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
+#include "directx/Include/d3d9.h"
+#include "directx/Include/d3dx9.h" //please read the readme.txt file if you have any problems with this include line. 
 
 //Direct3D variables
 extern LPDIRECT3D9 d3d;
