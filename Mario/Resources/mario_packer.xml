@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<standing>
+ <rect left="247" top = "0" width = "12" height="15" />
+</standing>
+
 <running>
- <rect left="246" top = "154" width = "14" height="27" />
+ <rect left="247" top = "0" width = "12" height="15" />
+  <rect left="275" top = "0" width = "16" height="16" />
 </running>
+
+<bigstanding>
+ <rect left="246" top = "154" width = "14" height="27" />
+</bigstanding>
+
+<bigrunning>
+ <rect left="246" top = "154" width = "14" height="27" />
+ <rect left="275" top = "154" width = "16" height="27" />
+</bigrunning>

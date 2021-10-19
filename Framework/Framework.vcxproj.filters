@@ -146,6 +146,9 @@
     <ClInclude Include="WorldContactListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HanabiWorld.h">
+      <Filter>Header Files\combinedheaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">

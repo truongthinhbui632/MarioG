@@ -170,6 +170,7 @@
     <ClInclude Include="HanabiScene.h" />
     <ClInclude Include="HanabiShape.h" />
     <ClInclude Include="HanabiSprite.h" />
+    <ClInclude Include="HanabiWorld.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="rapidxml\rapidxml.hpp" />
     <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />

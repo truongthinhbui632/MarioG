@@ -1,5 +1,7 @@
 #include "PlayScene.h"
 
+#define RENDERDEBUGBOX 1
+
 PlayScene::PlayScene()
 {
 }
@@ -18,14 +20,25 @@ void PlayScene::SetBatch(SpriteBatch* batch)
 
 void PlayScene::Create()
 {
+	//world
+	world.SetGravity(-19);
+	world.SetContactListener(&worldListener);
+
 	//load map
-	mapLoader.AddMap("map1", "Resources/world1-1.tmx", 1);
+	mapLoader.AddMap("map1", "Resources/world1-1.tmx", 1.5f);
 	map = mapLoader.GetMap("map1");
 
 
+	//create platform
+	std::vector<Shape::Rectangle> platformRects = map->GetObjectGroup("Platforms")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = platformRects.begin(); rect != platformRects.end(); ++rect)
+	{
+		Platform platform(&world, rect->x, rect->y, rect->width, rect->height);
+	}
+
 	//get player position
 	Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
-	player.Create(playerRect.x, playerRect.y);
+	player.Create(&world, playerRect.x, playerRect.y);
 
 	//set cam position
 	cam.SetPosition(640/2, 480/2);
@@ -35,6 +48,8 @@ void PlayScene::HandlePhysics(float dt)
 {
 	//handle input of player
 	player.HandleInput();
+
+	world.Update(dt);
 }
 
 void  PlayScene::Render()
@@ -48,6 +63,12 @@ void  PlayScene::Render()
 	//render player
 	player.Render(batch);
 
+#if RENDERDEBUGBOX
+	//draw bodies
+	world.RenderBodiesDebug(batch);
+
+#endif
+
 	//end drawing
 	batch->End();
 }
@@ -60,7 +81,6 @@ void PlayScene::Update(float dt)
 
 	player.Update(dt);
 	
-
 	//update camera
 	if (player.GetPosition().y > cam.GetPosition().y + 150)
 	{
@@ -83,7 +103,8 @@ void PlayScene::Update(float dt)
 
 void PlayScene::Release()
 {
-	
+	world.Release();
+	player.Release();
 }
 
 bool PlayScene::isOver()

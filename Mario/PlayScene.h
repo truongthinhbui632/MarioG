@@ -2,8 +2,11 @@
 #include "HanabiScene.h"
 #include "HanabiSprite.h"
 #include "HanabiMap.h"
-#include "Player.h"
 #include "HanabiShape.h"
+#include "HanabiWorld.h"
+#include "WorldListener.h"
+#include "Player.h"
+#include "Platform.h"
 
 class PlayScene: public Scene
 {
@@ -15,6 +18,12 @@ private:
 	TMXLoader mapLoader;
 	TMXMap* map;
 	
+	//World
+	World world;
+
+	//listen to collision between bodies
+	WorldListener worldListener;
+
 	//player
 	Player player;
 
