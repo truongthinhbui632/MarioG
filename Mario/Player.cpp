@@ -17,13 +17,12 @@ Player::~Player()
 void Player::Create(float x, float y)
 {
 	//get characterTexture
-	texture = Texture("Resources/mariofullsheet.png");
-
+	texture = Texture("Resources/mario.png");
 
 	TexturePacker p = TexturePacker(&texture, "Resources/mario_packer.xml");
 
-	SetRegion(p.GetRegion("standing").at(0));
-	SetSize(34, 60);
+	SetRegion(p.GetRegion("running").at(0));
+	//SetSize(14 * 1.5, 27 * 1.5);
 	SetPosition(x, y);
 }
 

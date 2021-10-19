@@ -5,9 +5,6 @@
 #include "Player.h"
 #include "HanabiShape.h"
 
-#define PLAYERAPPEARINGTIME 0.1
-enum SoundTheme { Brinstar, KraidTheme, MotherBrainTheme};
-
 class PlayScene: public Scene
 {
 private:

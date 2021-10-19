@@ -24,8 +24,8 @@ void PlayScene::Create()
 
 
 	//get player position
-	//Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
-	//player.Create(playerRect.x, playerRect.y);
+	Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
+	player.Create(playerRect.x, playerRect.y);
 
 	//set cam position
 	cam.SetPosition(640/2, 480/2);
@@ -34,7 +34,7 @@ void PlayScene::Create()
 void PlayScene::HandlePhysics(float dt)
 {
 	//handle input of player
-	//player.HandleInput();
+	player.HandleInput();
 }
 
 void  PlayScene::Render()
@@ -42,12 +42,11 @@ void  PlayScene::Render()
 	//start drawing
 	batch->Begin();
 
-	//render player
-	//player.Render(batch);
-
-	
 	//render map
 	map->Render(batch);
+	
+	//render player
+	player.Render(batch);
 
 	//end drawing
 	batch->End();
@@ -59,23 +58,23 @@ void PlayScene::Update(float dt)
 
 	HandlePhysics(dt);
 
-	//player.Update(dt);
+	player.Update(dt);
 	
 
-	////update camera
-	//if (player.GetPosition().y > cam.GetPosition().y + 150)
-	//{
-	//	cam.SetPosition(cam.GetPosition().x, player.GetPosition().y - 150);
-	//}
-	//else
-	//{
-	//	if (player.GetPosition().y < cam.GetPosition().y - 150)
-	//	{
-	//		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y + 150);
-	//	}
-	//}
+	//update camera
+	if (player.GetPosition().y > cam.GetPosition().y + 150)
+	{
+		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y - 150);
+	}
+	else
+	{
+		if (player.GetPosition().y < cam.GetPosition().y - 150)
+		{
+			cam.SetPosition(cam.GetPosition().x, player.GetPosition().y + 150);
+		}
+	}
 
-	//cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
+	cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
 
 	//RENDER
 	Render();
@@ -84,7 +83,7 @@ void PlayScene::Update(float dt)
 
 void PlayScene::Release()
 {
-
+	
 }
 
 bool PlayScene::isOver()
