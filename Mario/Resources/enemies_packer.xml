@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mushroom>
+ <rect left="15" top = "4" width = "16" height="16" />
+ <rect left="65" top = "4" width = "16" height="16" />
+</mushroom>

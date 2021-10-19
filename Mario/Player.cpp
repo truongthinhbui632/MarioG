@@ -16,6 +16,7 @@ Player::~Player()
 
 void Player::Create(World* world, float x, float y)
 {
+	isDead = false;
 	isGrounded = true;
 	jumpTime = 0;
 
@@ -42,13 +43,35 @@ void Player::Create(World* world, float x, float y)
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT;
+	mainBody->maskBits = PLATFORM_BIT | MUSHROOM_BIT;
 	mainBody->PutExtra(this);
+
+	//create foot
+	BodyDef footDef;
+	footDef.bodyType = Body::BodyType::Kinematic;
+	footDef.size.Set(16 * 1.48, 30);
+	footDef.isSensor = true;
+	foot = world->CreateBody(footDef);
+	foot->categoryBits = FOOT_BIT;
+	foot->maskBits = PLATFORM_BIT | MUSHROOM_BIT;
+	foot->PutExtra(this);
+
+	//create head
+	BodyDef headDef;
+	headDef.bodyType = Body::BodyType::Kinematic;
+	headDef.size.Set(16 * 1.48, 15);
+	headDef.isSensor = true;
+	head = world->CreateBody(headDef);
+	head->categoryBits = HEAD_BIT;
+	head->maskBits = PLATFORM_BIT;
+	head->PutExtra(this);
 }
 
 
 void Player::HandleInput()
 {
+	if (isDead) return;
+
 	//Move right
 	if (Input::GetKey(DIK_RIGHT))
 	{
@@ -61,23 +84,23 @@ void Player::HandleInput()
 		mainBody->SetVelocity(-7, mainBody->GetVelocity().y);
 	}
 
-	//hold-jump 
-	if (Input::GetKey(DIK_Z))
-	{
-		if (jumpTime < MAXJUMPTIME) //continue jumping if there is still jumptime
-		{
-			mainBody->SetVelocity(mainBody->GetVelocity().x, mainBody->GetVelocity().y + 0.5f);
-			jumpTime += 0.02f;
-		}
-		else
-		{
-			jumpTime = 100;  //don't jump more
-		}
-	}
-	else
-	{
-		jumpTime = 100; //don't jump more
-	}
+	////hold-jump 
+	//if (Input::GetKey(DIK_Z))
+	//{
+	//	if (jumpTime < MAXJUMPTIME) //continue jumping if there is still jumptime
+	//	{
+	//		mainBody->SetVelocity(mainBody->GetVelocity().x, mainBody->GetVelocity().y + 0.5f);
+	//		jumpTime += 0.02f;
+	//	}
+	//	else
+	//	{
+	//		jumpTime = 100;  //don't jump more
+	//	}
+	//}
+	//else
+	//{
+	//	jumpTime = 100; //don't jump more
+	//}
 
 	//jump only if grounded
 	if (Input::GetKeyDown(DIK_Z) && isGrounded)
@@ -90,6 +113,8 @@ void Player::HandleInput()
 
 void Player::Render(SpriteBatch *batch)
 {	
+	if (isDead) return;
+
 	//draw player
 	batch->Draw(*this);
 }
@@ -97,6 +122,8 @@ void Player::Render(SpriteBatch *batch)
 
 void Player::Update(float dt)
 {
+	if (isDead) return;
+
 	//flip if necessary
 	if (mainBody->GetVelocity().x > 0)
 	{
@@ -125,6 +152,31 @@ void Player::Update(float dt)
 
 	//update sprite position
 	SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y);
+	foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 15);
+	head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 15);
+}
+
+void Player::DamagePlayer()
+{
+	isDead = true;
+}
+
+void Player::OnGrounded()
+{
+	isGrounded = true;
+	jumpTime = 100;
+}
+
+void Player::OnExitGround()
+{
+	isGrounded = false;
+	jumpTime = 0;
+}
+
+void Player::JumpWhenKillEnemies()
+{
+	mainBody->SetVelocity(mainBody->GetVelocity().x, 8);
+	OnExitGround();
 }
 
 void Player::Release()

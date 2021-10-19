@@ -7,6 +7,7 @@
 #include "WorldListener.h"
 #include "Player.h"
 #include "Platform.h"
+#include "MushRoom.h"
 
 class PlayScene: public Scene
 {
@@ -29,6 +30,10 @@ private:
 
 	//draw texture, sprite, ...
 	SpriteBatch* batch;
+
+	//enemies
+	Texture enemiesTexture;
+	std::vector<MushRoom*> mushrooms;
 
 public:
 	PlayScene();

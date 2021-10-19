@@ -42,6 +42,18 @@ void PlayScene::Create()
 
 	//set cam position
 	cam.SetPosition(640/2, 480/2);
+
+	//--------------------------ENEMIES-------------------------------
+	enemiesTexture = Texture("Resources/enemies2.png");
+
+	//Mushrooms
+	std::vector<Shape::Rectangle> mushRoomRects = map->GetObjectGroup("Mushrooms")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = mushRoomRects.begin(); rect != mushRoomRects.end(); ++rect)
+	{
+		MushRoom *mushroom = new MushRoom();
+		mushroom->Create(&world, &enemiesTexture, rect->x, rect->y);
+		mushrooms.push_back(mushroom);
+	}
 }
 
 void PlayScene::HandlePhysics(float dt)
@@ -59,9 +71,15 @@ void  PlayScene::Render()
 
 	//render map
 	map->Render(batch);
-	
+
 	//render player
 	player.Render(batch);
+
+	//render mushrooms
+	for (std::vector<MushRoom*>::iterator it = mushrooms.begin(); it != mushrooms.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
 
 #if RENDERDEBUGBOX
 	//draw bodies
@@ -96,6 +114,21 @@ void PlayScene::Update(float dt)
 
 	cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
 
+
+	//update mushrooms
+	for (int i = 0; i < mushrooms.size(); i++)
+	{
+		MushRoom* mushroom = mushrooms[i];
+		mushroom->Update(dt);
+		//if (mushroom->IsDead())
+		//{
+		//	//delete skree
+		//	delete mushroom;
+		//	mushroom = NULL;
+		//	mushrooms.erase(mushrooms.begin() + i);
+		//}
+	}
+
 	//RENDER
 	Render();
 
@@ -105,6 +138,13 @@ void PlayScene::Release()
 {
 	world.Release();
 	player.Release();
+
+
+	for (std::vector<MushRoom*>::iterator it = mushrooms.begin(); it != mushrooms.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
 }
 
 bool PlayScene::isOver()

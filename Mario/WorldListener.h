@@ -1,5 +1,9 @@
 #pragma once
 #include"HanabiWorld.h"
+#include "CollisionBit.h"
+#include "Player.h"
+#include "MushRoom.h"
+
 class WorldListener : public WorldContactListener
 {
 public:

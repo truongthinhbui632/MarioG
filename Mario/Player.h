@@ -3,6 +3,7 @@
 #include "HanabiInput.h"
 #include "HanabiWorld.h"
 #include "CollisionBit.h"
+#include "HanabiConsole.h"
 
 #define MAXJUMPTIME 0.4
 
@@ -14,10 +15,14 @@ private:
 
 	//Body
 	Body* mainBody;
+	Body* foot;
+	Body* head;
 
 	//Animations
 	Animation standingAnimation;
 	Animation movingAnimation;
+
+	bool isDead;
 
 	float jumpTime;
 	bool isGrounded;
@@ -33,6 +38,13 @@ public:
 	void Render(SpriteBatch *batch);
 
 	void Update(float dt);
+
+	void DamagePlayer();
+
+	void OnExitGround();
+	void OnGrounded();
+
+	void JumpWhenKillEnemies();
 
 	void Release();
 };
