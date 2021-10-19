@@ -153,7 +153,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Body.h" />
+    <ClInclude Include="BodyDef.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -187,10 +190,15 @@
     <ClInclude Include="TMXTileSet.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="WorldContactListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Body.cpp" />
+    <ClCompile Include="BodyDef.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Global.cpp" />
@@ -209,6 +217,8 @@
     <ClCompile Include="TMXTileSet.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldContactListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="rapidxml\license.txt" />
