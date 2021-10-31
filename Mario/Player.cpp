@@ -103,7 +103,7 @@ void Player::HandleInput()
 	//}
 
 	//jump only if grounded
-	if (Input::GetKeyDown(DIK_Z) && isGrounded)
+	if (Input::GetKeyDown(DIK_UP) && isGrounded)
 	{
 		mainBody->SetVelocity(mainBody->GetVelocity().x, 10);
 		isGrounded = false;

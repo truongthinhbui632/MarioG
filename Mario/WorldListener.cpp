@@ -26,6 +26,23 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
+	case MUSHROOM_BIT* PLAYER_BIT:
+	{
+		if (CollisionDirection.y == NOT_COLLIDED)
+		{
+			if (bodyA->categoryBits == PLAYER_BIT)
+			{
+				Player* player = (Player*)(bodyA->GetExtra());
+				player->DamagePlayer();
+			}
+			else if (bodyB->categoryBits == PLAYER_BIT)
+			{
+				Player* player = (Player*)(bodyB->GetExtra());
+				player->DamagePlayer();
+			}
+			break;
+		}
+	}
 	}
 }
 

@@ -25,7 +25,7 @@ void PlayScene::Create()
 	world.SetContactListener(&worldListener);
 
 	//load map
-	mapLoader.AddMap("map1", "Resources/world1-1.tmx", 1.5f);
+	mapLoader.AddMap("map1", "Resources/world1_1.tmx", 1.5f);
 	map = mapLoader.GetMap("map1");
 
 
