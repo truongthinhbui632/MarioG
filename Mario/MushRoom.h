@@ -2,7 +2,6 @@
 #include "HanabiWorld.h"
 #include "HanabiSprite.h"
 #include "CollisionBit.h"
-#include "Player.h"
 
 class MushRoom : public Sprite
 {
@@ -14,20 +13,15 @@ private:
 
 	World* world;
 
-	bool isDead;
-
+	bool isEaten;
 public:
 	MushRoom();
 	~MushRoom();
-	void Create(World* world, Texture* mushRoomTexture, int x, int y);
+	void Create(World* world, Texture* mushroomTexture, float x, float y);
 
 	void Render(SpriteBatch* batch);
 
 	void Update(float dt);
 
-	void OnHitOnTheHead();
-
-	void ChangeDirection();
-
-	bool IsDead();
+	void OnHitPlayer();
 };

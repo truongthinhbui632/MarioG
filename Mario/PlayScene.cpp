@@ -47,12 +47,41 @@ void PlayScene::Create()
 	enemiesTexture = Texture("Resources/enemies2.png");
 
 	//Mushrooms
-	std::vector<Shape::Rectangle> mushRoomRects = map->GetObjectGroup("Mushrooms")->GetRects();
-	for (std::vector<Shape::Rectangle>::iterator rect = mushRoomRects.begin(); rect != mushRoomRects.end(); ++rect)
+	std::vector<Shape::Rectangle> goombaRects = map->GetObjectGroup("Mushrooms")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = goombaRects.begin(); rect != goombaRects.end(); ++rect)
 	{
-		MushRoom *mushroom = new MushRoom();
-		mushroom->Create(&world, &enemiesTexture, rect->x, rect->y);
-		mushrooms.push_back(mushroom);
+		Goomba *goomba = new Goomba();
+		goomba->Create(&world, &enemiesTexture, rect->x, rect->y);
+		goombas.push_back(goomba);
+	}
+
+	//WingMushrooms
+	std::vector<Shape::Rectangle> wingGoombaRects = map->GetObjectGroup("WingMushrooms")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = wingGoombaRects.begin(); rect != wingGoombaRects.end(); ++rect)
+	{
+		WingGoomba* winggoomba = new WingGoomba();
+		winggoomba->Create(&world, &enemiesTexture, rect->x, rect->y);
+		wingGoombas.push_back(winggoomba);
+	}
+
+	objectsTexture = Texture("Resources/objects.png");
+
+	//CoinQuestionBricks
+	std::vector<Shape::Rectangle> coinQuestionBrickRects = map->GetObjectGroup("CoinQuestionBricks")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = coinQuestionBrickRects.begin(); rect != coinQuestionBrickRects.end(); ++rect)
+	{
+		QuestionBrick* questionBrick = new QuestionBrick();
+		questionBrick->Create(&world, &objectsTexture, QuestionBrick::BrickType::CoinType, rect->x, rect->y);
+		questionBricks.push_back(questionBrick);
+	}
+
+	//MushRoomQuestionBricks
+	std::vector<Shape::Rectangle> mushRoomQuestionBrickRects = map->GetObjectGroup("MushRoomQuestionBricks")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = mushRoomQuestionBrickRects.begin(); rect != mushRoomQuestionBrickRects.end(); ++rect)
+	{
+		QuestionBrick* questionBrick = new QuestionBrick();
+		questionBrick->Create(&world, &objectsTexture, QuestionBrick::BrickType::MushRoomType, rect->x, rect->y);
+		questionBricks.push_back(questionBrick);
 	}
 }
 
@@ -76,7 +105,19 @@ void  PlayScene::Render()
 	player.Render(batch);
 
 	//render mushrooms
-	for (std::vector<MushRoom*>::iterator it = mushrooms.begin(); it != mushrooms.end(); ++it)
+	for (std::vector<Goomba*>::iterator it = goombas.begin(); it != goombas.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
+
+	//render wingMushrooms
+	for (std::vector<WingGoomba*>::iterator it = wingGoombas.begin(); it != wingGoombas.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
+
+	//render questionBricks
+	for (std::vector<QuestionBrick*>::iterator it = questionBricks.begin(); it != questionBricks.end(); ++it)
 	{
 		(*it)->Render(batch);
 	}
@@ -116,10 +157,10 @@ void PlayScene::Update(float dt)
 
 
 	//update mushrooms
-	for (int i = 0; i < mushrooms.size(); i++)
+	for (int i = 0; i < goombas.size(); i++)
 	{
-		MushRoom* mushroom = mushrooms[i];
-		mushroom->Update(dt);
+		Goomba* goomba = goombas[i];
+		goomba->Update(dt);
 		//if (mushroom->IsDead())
 		//{
 		//	//delete skree
@@ -127,6 +168,20 @@ void PlayScene::Update(float dt)
 		//	mushroom = NULL;
 		//	mushrooms.erase(mushrooms.begin() + i);
 		//}
+	}
+
+	//update wingmushrooms
+	for (int i = 0; i < wingGoombas.size(); i++)
+	{
+		WingGoomba* wingGoomba = wingGoombas[i];
+		wingGoomba->Update(dt);
+	}
+
+	//update questionBricks
+	for (int i = 0; i < questionBricks.size(); i++)
+	{
+		QuestionBrick* questionBrick = questionBricks[i];
+		questionBrick->Update(dt);
 	}
 
 	//RENDER
@@ -140,7 +195,19 @@ void PlayScene::Release()
 	player.Release();
 
 
-	for (std::vector<MushRoom*>::iterator it = mushrooms.begin(); it != mushrooms.end(); ++it)
+	for (std::vector<Goomba*>::iterator it = goombas.begin(); it != goombas.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
+
+	for (std::vector<WingGoomba*>::iterator it = wingGoombas.begin(); it != wingGoombas.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
+
+	for (std::vector<QuestionBrick*>::iterator it = questionBricks.begin(); it != questionBricks.end(); ++it)
 	{
 		delete* it;
 		*it = NULL;

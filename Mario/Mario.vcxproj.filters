@@ -42,6 +42,15 @@
     <ClInclude Include="WorldListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Goomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WingGoomba.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="MushRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,6 +81,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WorldListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Goomba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WingGoomba.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MushRoom.cpp">

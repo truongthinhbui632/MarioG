@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mushroom>
+<goomba>
  <rect left="15" top = "4" width = "16" height="16" />
  <rect left="65" top = "4" width = "16" height="16" />
-</mushroom>
+</goomba>
+
+<winggoombajumping>
+ <rect left="213" top = "52" width = "20" height="19" />
+ <rect left="263" top = "52" width = "20" height="19" />
+</wingmushroomjumping>
+
+<winggoombawalking>
+ <rect left="15" top = "54" width = "16" height="16" />
+ <rect left="65" top = "54" width = "16" height="16" />
+</winggoombawalking>

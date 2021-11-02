@@ -17,6 +17,7 @@ Player::~Player()
 void Player::Create(World* world, float x, float y)
 {
 	isDead = false;
+	isBig = false;
 	isGrounded = true;
 	jumpTime = 0;
 
@@ -33,6 +34,9 @@ void Player::Create(World* world, float x, float y)
 	standingAnimation.AddRegion(p.GetRegion("standing"));
 	movingAnimation.AddRegion(p.GetRegion("running"));
 	movingAnimation.SetFrameInterval(0.02);
+	bigStandingAnimation.AddRegion(p.GetRegion("bigstanding"));
+	bigMovingAnimation.AddRegion(p.GetRegion("bigrunning"));
+	bigMovingAnimation.SetFrameInterval(0.02);
 
 	//setup mainbody
 	BodyDef bodyDef;
@@ -43,27 +47,27 @@ void Player::Create(World* world, float x, float y)
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT | MUSHROOM_BIT;
+	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT;
 	mainBody->PutExtra(this);
 
 	//create foot
 	BodyDef footDef;
 	footDef.bodyType = Body::BodyType::Kinematic;
-	footDef.size.Set(16 * 1.48, 30);
+	footDef.size.Set(16 * 1.49, 16 * 1.49);
 	footDef.isSensor = true;
 	foot = world->CreateBody(footDef);
 	foot->categoryBits = FOOT_BIT;
-	foot->maskBits = PLATFORM_BIT | MUSHROOM_BIT;
+	foot->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT;
 	foot->PutExtra(this);
 
 	//create head
 	BodyDef headDef;
 	headDef.bodyType = Body::BodyType::Kinematic;
-	headDef.size.Set(16 * 1.48, 15);
+	headDef.size.Set(16 * 1.49, 16 * 1.49);
 	headDef.isSensor = true;
 	head = world->CreateBody(headDef);
 	head->categoryBits = HEAD_BIT;
-	head->maskBits = PLATFORM_BIT;
+	head->maskBits =  QUESTIONBRICK_BIT;
 	head->PutExtra(this);
 }
 
@@ -142,23 +146,54 @@ void Player::Update(float dt)
 	{
 		if (mainBody->GetVelocity().x != 0)
 		{
-			SetRegion(*movingAnimation.Next(dt));
+			if (isBig)
+			{
+				SetRegion(*bigMovingAnimation.Next(dt));
+			}
+			else
+			{
+				SetRegion(*movingAnimation.Next(dt));
+			}
 		}
 		else
 		{
-			SetRegion(*standingAnimation.Next(dt));
+			if (isBig)
+			{
+				SetRegion(*bigStandingAnimation.Next(dt));
+			}
+			else
+			{
+				SetRegion(*standingAnimation.Next(dt));
+			}
 		}
 	}
 
 	//update sprite position
 	SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y);
-	foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 15);
-	head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 15);
+	if (isBig)
+	{
+		foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 26);
+		head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 26);
+	}
+	else
+	{
+		foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 15);
+		head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 15);
+	}
 }
 
 void Player::DamagePlayer()
 {
-	isDead = true;
+	if (isBig)
+	{
+		isBig = false;
+		mainBody->SetSize(16 * 1.5f, 16 * 1.5f);
+	}
+	{
+		isDead = true;
+		mainBody->maskBits = 0;
+		foot->maskBits = 0;
+	}
 }
 
 void Player::OnGrounded()
@@ -177,6 +212,12 @@ void Player::JumpWhenKillEnemies()
 {
 	mainBody->SetVelocity(mainBody->GetVelocity().x, 8);
 	OnExitGround();
+}
+
+void Player::BecomeBig()
+{
+	isBig = true;
+	mainBody->SetSize(16 * 1.5f, 27 * 1.5f);
 }
 
 void Player::Release()

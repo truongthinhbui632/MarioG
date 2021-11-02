@@ -5,8 +5,6 @@
 #include "CollisionBit.h"
 #include "HanabiConsole.h"
 
-#define MAXJUMPTIME 0.4
-
 //Main character
 class Player : public Sprite
 {
@@ -21,7 +19,11 @@ private:
 	//Animations
 	Animation standingAnimation;
 	Animation movingAnimation;
+	Animation bigStandingAnimation;
+	Animation bigMovingAnimation;
 
+	bool isBig;
+	
 	bool isDead;
 
 	float jumpTime;
@@ -45,6 +47,8 @@ public:
 	void OnGrounded();
 
 	void JumpWhenKillEnemies();
+
+	void BecomeBig();
 
 	void Release();
 };

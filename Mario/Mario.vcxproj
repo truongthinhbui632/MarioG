@@ -150,11 +150,14 @@
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="MarioGame.h" />
+    <ClInclude Include="Goomba.h" />
     <ClInclude Include="MushRoom.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="StartScene.h" />
+    <ClInclude Include="WingGoomba.h" />
     <ClInclude Include="WorldListener.h" />
   </ItemGroup>
   <ItemGroup>
@@ -162,11 +165,14 @@
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MarioGame.cpp" />
+    <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="MushRoom.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="StartScene.cpp" />
+    <ClCompile Include="WingGoomba.cpp" />
     <ClCompile Include="WorldListener.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

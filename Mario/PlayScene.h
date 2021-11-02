@@ -7,7 +7,9 @@
 #include "WorldListener.h"
 #include "Player.h"
 #include "Platform.h"
-#include "MushRoom.h"
+#include "Goomba.h"
+#include "WingGoomba.h"
+#include "QuestionBrick.h"
 
 class PlayScene: public Scene
 {
@@ -33,7 +35,10 @@ private:
 
 	//enemies
 	Texture enemiesTexture;
-	std::vector<MushRoom*> mushrooms;
+	Texture objectsTexture;
+	std::vector<Goomba*> goombas;
+	std::vector<WingGoomba*> wingGoombas;
+	std::vector<QuestionBrick*> questionBricks;
 
 public:
 	PlayScene();

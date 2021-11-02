@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<questionbrick>
+ <rect left="300" top = "117" width = "16" height="16" />
+ <rect left="318" top = "117" width = "16" height="16" />
+ <rect left="336" top = "117" width = "16" height="16" />
+ <rect left="354" top = "117" width = "16" height="16" />
+</questionbrick>
+
+<questionbrickstatic>
+ <rect left="372" top = "117" width = "16" height="16" />
+</questionbrickstatic>
+
+<mushroom>
+ <rect left="300" top = "189" width = "16" height="16" />
+</mushroom>

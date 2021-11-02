@@ -2,7 +2,9 @@
 #include"HanabiWorld.h"
 #include "CollisionBit.h"
 #include "Player.h"
-#include "MushRoom.h"
+#include "Goomba.h"
+#include "WingGoomba.h"
+#include "QuestionBrick.h"
 
 class WorldListener : public WorldContactListener
 {

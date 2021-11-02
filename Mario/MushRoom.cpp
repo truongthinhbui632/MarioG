@@ -9,10 +9,10 @@ MushRoom::~MushRoom()
 {
 }
 
-void MushRoom::Create(World* world, Texture* mushRoomTexture, int x, int y)
+void MushRoom::Create(World* world, Texture* mushroomTexture, float x, float y)
 {
 	this->world = world;
-	TexturePacker p = TexturePacker(mushRoomTexture, "Resources/enemies_packer.xml");
+	TexturePacker p = TexturePacker(mushroomTexture, "Resources/objects_packer.xml");
 
 	mushroomAnimation.AddRegion(p.GetRegion("mushroom"));
 	//mushroomAnimation.SetFrameInterval(0.04);
@@ -23,28 +23,28 @@ void MushRoom::Create(World* world, Texture* mushRoomTexture, int x, int y)
 
 	//setup body
 	BodyDef bodyDef;
-	bodyDef.bodyType = Body::BodyType::Kinematic;
+	bodyDef.bodyType = Body::BodyType::Dynamic;
 	bodyDef.position.Set(x, y);
-	bodyDef.size.Set(16 * 1.5, 16 * 1.5);
+	bodyDef.size.Set(15.5 * 1.5, 15.5 * 1.5);
 	body = world->CreateBody(bodyDef);
 	body->categoryBits = MUSHROOM_BIT;
-	body->maskBits = PLAYER_BIT | PLATFORM_BIT | FOOT_BIT;
+	body->maskBits = PLAYER_BIT | PLATFORM_BIT | QUESTIONBRICK_BIT;
 	body->PutExtra(this);
 
-	body->SetVelocity(-1, 0);
+	isEaten = false;
 }
 
 
 void MushRoom::Render(SpriteBatch* batch)
 {
-	if (isDead) return;
+	if (isEaten) return;
 
 	batch->Draw(*this);
 }
 
 void MushRoom::Update(float dt)
 {
-	if (isDead)
+	if (isEaten)
 	{
 		if (body != nullptr)
 		{
@@ -56,25 +56,14 @@ void MushRoom::Update(float dt)
 
 	SetRegion(*mushroomAnimation.Next(dt));
 
-	//Flip(!IsFlipX(), IsFlipY());
+	body->SetVelocity(1, body->GetVelocity().y);
 
 	this->SetPosition(body->GetPosition().x, body->GetPosition().y);
 }
 
 
-void MushRoom::OnHitOnTheHead()
+void MushRoom::OnHitPlayer()
 {
-	isDead = true;
+	isEaten = true;
 	body->maskBits = 0;
-}
-
-void MushRoom::ChangeDirection()
-{
-	//Flip(!IsFlipX(), IsFlipY());
-	body->SetVelocity(-body->GetVelocity().x, 0);
-}
-
-bool MushRoom::IsDead()
-{
-	return isDead;
 }
