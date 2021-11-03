@@ -9,6 +9,7 @@
 #include "Platform.h"
 #include "Goomba.h"
 #include "WingGoomba.h"
+#include "Koopa.h"
 #include "QuestionBrick.h"
 
 class PlayScene: public Scene
@@ -38,6 +39,7 @@ private:
 	Texture objectsTexture;
 	std::vector<Goomba*> goombas;
 	std::vector<WingGoomba*> wingGoombas;
+	std::vector<Koopa*> koopas;
 	std::vector<QuestionBrick*> questionBricks;
 
 public:

@@ -35,6 +35,49 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
+	case KOOPA_BIT* PLATFORM_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT && CollisionDirection.y == NOT_COLLIDED)
+		{
+			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
+			koopa->ChangeDirection();
+		}
+		break;
+	}
+	case KOOPA_BIT* GOOMBA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			Goomba* goomba = (Goomba*)(bodyB->GetExtra());
+			goomba->OnHitOnTheHead();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				Goomba* goomba = (Goomba*)(bodyA->GetExtra());
+				goomba->OnHitOnTheHead();
+			}
+		}
+		break;
+	}
+	case KOOPA_BIT* WINGGOOMBA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			WingGoomba* goomba = (WingGoomba*)(bodyB->GetExtra());
+			goomba->OnHitOnTheHead();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				WingGoomba* goomba = (WingGoomba*)(bodyA->GetExtra());
+				goomba->OnHitOnTheHead();
+			}
+		}
+		break;
+	}
 	case GOOMBA_BIT* PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
@@ -56,6 +99,26 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		break;
 	}
 	case WINGGOOMBA_BIT* PLAYER_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y < bodyB->GetPosition().y)
+			{
+				Player* player = (Player*)(bodyA->GetExtra());
+				player->DamagePlayer();
+			}
+		}
+		else if (bodyB->categoryBits == PLAYER_BIT)
+		{
+			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y > bodyB->GetPosition().y)
+			{
+				Player* player = (Player*)(bodyB->GetExtra());
+				player->DamagePlayer();
+			}
+		}
+		break;
+	}
+	case KOOPA_BIT* PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
 		{
@@ -140,6 +203,26 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 		}
 		break;
 	}
+	case KOOPA_BIT* PLAYER_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			if (collisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y < bodyB->GetPosition().y)
+			{
+				Player* player = (Player*)(bodyA->GetExtra());
+				player->DamagePlayer();
+			}
+		}
+		else if (bodyB->categoryBits == PLAYER_BIT)
+		{
+			if (collisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y > bodyB->GetPosition().y)
+			{
+				Player* player = (Player*)(bodyB->GetExtra());
+				player->DamagePlayer();
+			}
+		}
+		break;
+	}
 	case PLAYER_BIT * MUSHROOM_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
@@ -158,13 +241,47 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 		}
 		break;
 	}
+	case KOOPA_BIT* GOOMBA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			Goomba* goomba = (Goomba*)(bodyB->GetExtra());
+			goomba->OnHitOnTheHead();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				Goomba* goomba = (Goomba*)(bodyA->GetExtra());
+				goomba->OnHitOnTheHead();
+			}
+		}
+		break;
+	}
+	case KOOPA_BIT* WINGGOOMBA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			WingGoomba* goomba = (WingGoomba*)(bodyB->GetExtra());
+			goomba->OnHitOnTheHead();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				WingGoomba* goomba = (WingGoomba*)(bodyA->GetExtra());
+				goomba->OnHitOnTheHead();
+			}
+		}
+		break;
+	}
 	}
 }
 
 
 void WorldListener::OnCollisionExit(Body* bodyA, Body* bodyB, const Vector2& collisionDirection)
 {
-
+	
 }
 
 
@@ -226,6 +343,27 @@ void WorldListener::OnSersorEnter(Body* bodyA, Body* bodyB)
 			{
 				WingGoomba* mushroom = (WingGoomba*)(bodyB->GetExtra());
 				mushroom->OnHitOnTheHead();
+				Player* player = (Player*)(bodyA->GetExtra());
+				player->JumpWhenKillEnemies();
+			}
+		}
+		break;
+	}
+	case FOOT_BIT* KOOPA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
+			koopa->OnHitOnTheHead();
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->JumpWhenKillEnemies();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
+				koopa->OnHitOnTheHead();
 				Player* player = (Player*)(bodyA->GetExtra());
 				player->JumpWhenKillEnemies();
 			}
@@ -302,6 +440,27 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 			{
 				WingGoomba* mushroom = (WingGoomba*)(bodyB->GetExtra());
 				mushroom->OnHitOnTheHead();
+				Player* player = (Player*)(bodyA->GetExtra());
+				player->JumpWhenKillEnemies();
+			}
+		}
+		break;
+	}
+	case FOOT_BIT* KOOPA_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT)
+		{
+			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
+			koopa->OnHitOnTheHead();
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->JumpWhenKillEnemies();
+		}
+		else
+		{
+			if (bodyB->categoryBits == KOOPA_BIT)
+			{
+				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
+				koopa->OnHitOnTheHead();
 				Player* player = (Player*)(bodyA->GetExtra());
 				player->JumpWhenKillEnemies();
 			}

@@ -226,8 +226,6 @@ void World::CheckCollision(Body* body1, Body* body2, const RECT& broadphaseRect,
 
 				//perform collision
 				collision.PerformCollision(body1, body2, dt, 0, moveX, moveY);
-
-
 			}
 			else //if not, check collision exit callback
 			{
@@ -238,14 +236,11 @@ void World::CheckCollision(Body* body1, Body* body2, const RECT& broadphaseRect,
 				}
 				else
 				{
-
 					if (touching == 2 && body1->GetVelocity().x != 0)
 					{
 						_Listener->OnCollisionExit(body1, body2, collision._CollisionDirection);
 					}
 				}
-
-
 			}
 
 			//check overlaying (sometimes two bodies are already overlaying each other 

@@ -47,7 +47,7 @@ void Player::Create(World* world, float x, float y)
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT;
+	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT;
 	mainBody->PutExtra(this);
 
 	//create foot
@@ -57,7 +57,7 @@ void Player::Create(World* world, float x, float y)
 	footDef.isSensor = true;
 	foot = world->CreateBody(footDef);
 	foot->categoryBits = FOOT_BIT;
-	foot->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT;
+	foot->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | KOOPA_BIT;
 	foot->PutExtra(this);
 
 	//create head

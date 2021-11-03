@@ -55,7 +55,7 @@ bool Collision::IsColliding(Body* targetBody, Body* otherBody, float DeltaTime)
 	}
 
 	//tính toán t x entry/ exit
-	if (targetVelocity.x == 0.0f) //tránh trường hợp a.velocity = 0 dẫn tới việc chia cho 0, nên ta gán x entry/ exit = +/-vô cùng
+	if (tempvx == 0.0f) //tránh trường hợp a.velocity = 0 dẫn tới việc chia cho 0, nên ta gán x entry/ exit = +/-vô cùng
 	{
 		rxentry = -std::numeric_limits<float>::infinity();
 		rxexit = std::numeric_limits<float>::infinity();
@@ -67,7 +67,7 @@ bool Collision::IsColliding(Body* targetBody, Body* otherBody, float DeltaTime)
 	}
 
 	//tính toán t y entry/ exit, tương tự x entry/ exit
-	if (targetVelocity.y == 0.0f)
+	if (tempvy == 0.0f)
 	{
 		ryentry = -std::numeric_limits<float>::infinity();
 		ryexit = std::numeric_limits<float>::infinity();

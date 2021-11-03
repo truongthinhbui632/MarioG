@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Goomba.h"
 #include "WingGoomba.h"
+#include "Koopa.h"
 #include "QuestionBrick.h"
 
 class WorldListener : public WorldContactListener

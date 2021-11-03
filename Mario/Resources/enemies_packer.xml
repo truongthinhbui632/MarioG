@@ -14,3 +14,17 @@
  <rect left="15" top = "54" width = "16" height="16" />
  <rect left="65" top = "54" width = "16" height="16" />
 </winggoombawalking>
+
+<koopamoving>
+ <rect left="215" top = "199" width = "16" height="26" />
+ <rect left="255" top = "198" width = "16" height="27" />
+</koopamoving>
+
+<koopastatic>
+ <rect left="50" top = "204" width = "16" height="16" />
+</koopastatic>
+
+<kooparolling>
+ <rect left="15" top = "204" width = "16" height="16" />
+ <rect left="50" top = "204" width = "16" height="16" />
+</kooparolling>

@@ -64,6 +64,15 @@ void PlayScene::Create()
 		wingGoombas.push_back(winggoomba);
 	}
 
+	//Koopas
+	std::vector<Shape::Rectangle> koopabaRects = map->GetObjectGroup("Koopas")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = koopabaRects.begin(); rect != koopabaRects.end(); ++rect)
+	{
+		Koopa* koopa = new Koopa();
+		koopa->Create(&world, &enemiesTexture, rect->x, rect->y);
+		koopas.push_back(koopa);
+	}
+
 	objectsTexture = Texture("Resources/objects.png");
 
 	//CoinQuestionBricks
@@ -118,6 +127,12 @@ void  PlayScene::Render()
 
 	//render questionBricks
 	for (std::vector<QuestionBrick*>::iterator it = questionBricks.begin(); it != questionBricks.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
+
+	//render koopas
+	for (std::vector<Koopa*>::iterator it = koopas.begin(); it != koopas.end(); ++it)
 	{
 		(*it)->Render(batch);
 	}
@@ -184,6 +199,13 @@ void PlayScene::Update(float dt)
 		questionBrick->Update(dt);
 	}
 
+	//update koopas
+	for (int i = 0; i < koopas.size(); i++)
+	{
+		Koopa* koopa = koopas[i];
+		koopa->Update(dt);
+	}
+
 	//RENDER
 	Render();
 
@@ -208,6 +230,12 @@ void PlayScene::Release()
 	}
 
 	for (std::vector<QuestionBrick*>::iterator it = questionBricks.begin(); it != questionBricks.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
+
+	for (std::vector<Koopa*>::iterator it = koopas.begin(); it != koopas.end(); ++it)
 	{
 		delete* it;
 		*it = NULL;
