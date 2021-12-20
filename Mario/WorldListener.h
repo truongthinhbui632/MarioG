@@ -6,6 +6,8 @@
 #include "WingGoomba.h"
 #include "Koopa.h"
 #include "QuestionBrick.h"
+#include "Coin.h"
+#include "CoinBrick.h"
 
 class WorldListener : public WorldContactListener
 {

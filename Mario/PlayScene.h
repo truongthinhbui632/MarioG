@@ -11,6 +11,8 @@
 #include "WingGoomba.h"
 #include "Koopa.h"
 #include "QuestionBrick.h"
+#include "Coin.h"
+#include "CoinBrick.h"
 
 class PlayScene: public Scene
 {
@@ -40,7 +42,11 @@ private:
 	std::vector<Goomba*> goombas;
 	std::vector<WingGoomba*> wingGoombas;
 	std::vector<Koopa*> koopas;
+
+	//objects
 	std::vector<QuestionBrick*> questionBricks;
+	std::vector<Coin*> coins;
+	std::vector<CoinBrick*> coinBricks;
 
 public:
 	PlayScene();

@@ -17,6 +17,23 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 {
 	switch (bodyA->categoryBits * bodyB->categoryBits)
 	{
+	case PLAYER_BIT* COINBRICK_BIT:
+	{
+		if (bodyB->categoryBits == COINBRICK_BIT)
+		{
+			CoinBrick* coinBrick = (CoinBrick*)(bodyB->GetExtra());
+			coinBrick->Destroy();
+		}
+		else
+		{
+			if (bodyA->categoryBits == COINBRICK_BIT)
+			{
+				CoinBrick* coinBrick = (CoinBrick*)(bodyA->GetExtra());
+				coinBrick->Destroy();
+			}
+		}
+		break;
+	}
 	case GOOMBA_BIT * PLATFORM_BIT:
 	{
 		if (bodyA->categoryBits == GOOMBA_BIT && CollisionDirection.y == NOT_COLLIDED)
@@ -289,7 +306,50 @@ void WorldListener::OnSersorEnter(Body* bodyA, Body* bodyB)
 {
 	switch (bodyA->categoryBits * bodyB->categoryBits)
 	{
+	case PLAYER_BIT* COIN_BIT:
+	{
+		if (bodyB->categoryBits == COIN_BIT)
+		{
+			Coin* coin = (Coin*)(bodyB->GetExtra());
+			coin->Destroy();
+		}
+		else
+		{
+			if (bodyA->categoryBits == COIN_BIT)
+			{
+				Coin* coin = (Coin*)(bodyA->GetExtra());
+				coin->Destroy();
+			}
+		}
+		break;
+	}
+	case PLAYER_BIT* COINBRICK_BIT:
+	{
+		if (bodyB->categoryBits == COINBRICK_BIT)
+		{
+			CoinBrick* coin = (CoinBrick*)(bodyB->GetExtra());
+			coin->Destroy();
+		}
+		else
+		{
+			if (bodyA->categoryBits == COINBRICK_BIT)
+			{
+				CoinBrick* coin = (CoinBrick*)(bodyA->GetExtra());
+				coin->Destroy();
+			}
+		}
+		break;
+	}
 	case FOOT_BIT* PLATFORM_BIT:
+	{
+		if (bodyA->categoryBits == FOOT_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->OnGrounded();
+		}
+		break;
+	}
+	case FOOT_BIT* COINBRICK_BIT:
 	{
 		if (bodyA->categoryBits == FOOT_BIT)
 		{

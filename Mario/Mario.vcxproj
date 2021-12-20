@@ -146,6 +146,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="CoinBrick.h" />
     <ClInclude Include="CollisionBit.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="IntroScene.h" />
@@ -162,6 +164,8 @@
     <ClInclude Include="WorldListener.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="CoinBrick.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopa.cpp" />

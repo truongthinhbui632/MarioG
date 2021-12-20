@@ -92,6 +92,24 @@ void PlayScene::Create()
 		questionBrick->Create(&world, &objectsTexture, QuestionBrick::BrickType::MushRoomType, rect->x, rect->y);
 		questionBricks.push_back(questionBrick);
 	}
+
+	//Coins
+	std::vector<Shape::Rectangle> coinRects = map->GetObjectGroup("Coins")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = coinRects.begin(); rect != coinRects.end(); ++rect)
+	{
+		Coin* coin = new Coin();
+		coin->Create(&world, &objectsTexture, rect->x, rect->y);
+		coins.push_back(coin);
+	}
+
+	//CoinBricks
+	std::vector<Shape::Rectangle> coinBrickRects = map->GetObjectGroup("CoinBricks")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = coinBrickRects.begin(); rect != coinBrickRects.end(); ++rect)
+	{
+		CoinBrick* coinBrick = new CoinBrick();
+		coinBrick->Create(&world, &objectsTexture, rect->x, rect->y);
+		coinBricks.push_back(coinBrick);
+	}
 }
 
 void PlayScene::HandlePhysics(float dt)
@@ -131,6 +149,18 @@ void  PlayScene::Render()
 		(*it)->Render(batch);
 	}
 
+	//render coins
+	for (std::vector<Coin*>::iterator it = coins.begin(); it != coins.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
+
+	//render coinBricks
+	for (std::vector<CoinBrick*>::iterator it = coinBricks.begin(); it != coinBricks.end(); ++it)
+	{
+		(*it)->Render(batch);
+	}
+
 	//render koopas
 	for (std::vector<Koopa*>::iterator it = koopas.begin(); it != koopas.end(); ++it)
 	{
@@ -152,6 +182,23 @@ void PlayScene::Update(float dt)
 {
 
 	HandlePhysics(dt);
+
+	if (Input::GetKeyDown(DIK_P))
+	{
+		// coinbricks <=> coins
+		for (int i = 0; i < coinBricks.size(); i++)
+		{
+			CoinBrick* coinBrick = coinBricks[i];
+			if (coinBrick->IsCoin())
+			{
+				coinBrick->TurnBackToBrick();
+			}
+			else
+			{
+				coinBrick->TurnToCoin();
+			}
+		}
+	}
 
 	player.Update(dt);
 	
@@ -199,6 +246,20 @@ void PlayScene::Update(float dt)
 		questionBrick->Update(dt);
 	}
 
+	//update coins
+	for (int i = 0; i < coins.size(); i++)
+	{
+		Coin* coin = coins[i];
+		coin->Update(dt);
+	}
+
+	//update coinbricks
+	for (int i = 0; i < coinBricks.size(); i++)
+	{
+		CoinBrick* coinBrick = coinBricks[i];
+		coinBrick->Update(dt);
+	}
+
 	//update koopas
 	for (int i = 0; i < koopas.size(); i++)
 	{
@@ -230,6 +291,18 @@ void PlayScene::Release()
 	}
 
 	for (std::vector<QuestionBrick*>::iterator it = questionBricks.begin(); it != questionBricks.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
+
+	for (std::vector<Coin*>::iterator it = coins.begin(); it != coins.end(); ++it)
+	{
+		delete* it;
+		*it = NULL;
+	}
+
+	for (std::vector<CoinBrick*>::iterator it = coinBricks.begin(); it != coinBricks.end(); ++it)
 	{
 		delete* it;
 		*it = NULL;
