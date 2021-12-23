@@ -5,14 +5,17 @@
 #include "IntroScene.h"
 #include "StartScene.h"
 #include "GameOverScene.h"
+#include "BonusScene1.h"
 
 class MarioGame : public Game
 {
 private:
-	SpriteBatch batch;
+	SpriteBatch batch1;
+	SpriteBatch batch2;
 	PlayScene playScene;
 	IntroScene introScene;
 	StartScene startScene;
+	BonusScene1 bonusScene1;
 	GameOverScene gameOverScene;
 	float pauseTime;
 	Scene *scenes;

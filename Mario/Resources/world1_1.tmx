@@ -130,6 +130,6 @@
   <object id="79" x="1040" y="368" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="4" name="Player">
-  <object id="55" x="446" y="324.333" width="13.3333" height="9.33333"/>
+  <object id="55" x="441.333" y="332.666" width="13.3333" height="9.33333"/>
  </objectgroup>
 </map>

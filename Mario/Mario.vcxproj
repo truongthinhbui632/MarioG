@@ -146,6 +146,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BonusScene1.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinBrick.h" />
     <ClInclude Include="CollisionBit.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="WorldListener.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BonusScene1.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinBrick.cpp" />
     <ClCompile Include="GameOverScene.cpp" />

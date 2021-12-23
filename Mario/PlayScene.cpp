@@ -209,6 +209,11 @@ void PlayScene::Update(float dt)
 		}
 	}
 
+	if(Input::GetKeyDown(DIK_S))
+	{
+		isSwitchToBonusScene = true;
+	}
+
 	player.Update(dt);
 	
 	//update camera
@@ -232,13 +237,6 @@ void PlayScene::Update(float dt)
 	{
 		Goomba* goomba = goombas[i];
 		goomba->Update(dt);
-		//if (mushroom->IsDead())
-		//{
-		//	//delete skree
-		//	delete mushroom;
-		//	mushroom = NULL;
-		//	mushrooms.erase(mushrooms.begin() + i);
-		//}
 	}
 
 	//update wingmushrooms

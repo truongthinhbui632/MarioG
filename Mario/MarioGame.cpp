@@ -17,7 +17,8 @@ void MarioGame::CreateGame()
 {
 
 	//create batch to draw everything
-	batch.Create();
+	batch1.Create();
+	batch2.Create();
 
 	//// 1/intro scene
 	//introScene.Create();
@@ -29,7 +30,10 @@ void MarioGame::CreateGame()
 
 	// 3/play screen
 	playScene.Create();
-	playScene.SetBatch(&batch);
+	playScene.SetBatch(&batch1);
+
+	bonusScene1.Create();
+	bonusScene1.SetBatch(&batch2);
 
 	//// 4/gameover scene
 	//gameOverScene.Create();
@@ -44,6 +48,26 @@ void MarioGame::UpdateGame(float dt)
 {
 	Game::UpdateGame(dt);
 	
+	if (scenes == &playScene)
+	{
+		if (playScene.isSwitchToBonusScene == true)
+		{
+			SetScene(&bonusScene1);
+			scenes = &bonusScene1;
+			playScene.isSwitchToBonusScene = false;
+		}
+	}
+
+	if (scenes == &bonusScene1)
+	{
+		if (bonusScene1.isSwitchToMainScene == true)
+		{
+			SetScene(&playScene);
+			scenes = &playScene;
+			bonusScene1.isSwitchToMainScene = false;
+		}
+	}
+
 	/*if (Input::GetKeyDown(DIK_ESCAPE))
 	{
 		ShutDownApplication();
@@ -81,7 +105,9 @@ void MarioGame::UpdateGame(float dt)
 void MarioGame::Release()
 {
 	Game::Release();
-	batch.Release();
+	batch1.Release();
+	batch2.Release();
 	playScene.Release();
+	bonusScene1.Release();
 }
 

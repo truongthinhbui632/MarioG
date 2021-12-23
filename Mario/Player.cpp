@@ -118,6 +118,19 @@ void Player::HandleInput()
 		jumpTime = 0;
 	}
 
+	////jump only if grounded
+	//if (Input::GetKeyDown(DIK_DOWN) && isGroundedOnPortal)
+	//{
+	//	
+	//}
+
+	//if (IsMovingThroughPortal)
+	//{
+	//	mainBody->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 5);
+	//	//after 1s
+	//	//switch scene
+	//}
+
 	if (Input::GetKey(DIK_UP) && isRacoon)
 	{
 		mainBody->SetVelocity(mainBody->GetVelocity().x, 3);
