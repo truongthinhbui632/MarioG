@@ -102,7 +102,7 @@ void Koopa::OnHitOnTheHead()
 		if (health == 1)
 		{
 			velocityX = 5;
-			body->maskBits = body->maskBits | GOOMBA_BIT | WINGGOOMBA_BIT;
+			body->maskBits = body->maskBits | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT;
 		}
 		else
 		{
@@ -115,6 +115,7 @@ void Koopa::OnHitOnTheHead()
 void Koopa::ChangeDirection()
 {
 	velocityX = -velocityX;
+	Flip(velocityX > 0 ? false : true, false);
 }
 
 bool Koopa::IsDead()

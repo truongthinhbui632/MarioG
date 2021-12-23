@@ -3,6 +3,7 @@
 #include "HanabiSprite.h"
 #include "CollisionBit.h"
 #include "MushRoom.h"
+#include "Leaf.h"
 
 class QuestionBrick : public Sprite
 {
@@ -25,6 +26,8 @@ private:
 	BrickType brickType;
 
 	MushRoom mushRoom;
+
+	Leaf leaf;
 
 public:
 

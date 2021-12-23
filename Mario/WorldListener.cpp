@@ -15,9 +15,9 @@ WorldListener::~WorldListener()
 
 void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& CollisionDirection)
 {
-	switch (bodyA->categoryBits * bodyB->categoryBits)
+	switch (bodyA->categoryBits + bodyB->categoryBits)
 	{
-	case PLAYER_BIT* COINBRICK_BIT:
+	case PLAYER_BIT + COINBRICK_BIT:
 	{
 		if (bodyB->categoryBits == COINBRICK_BIT)
 		{
@@ -34,7 +34,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case GOOMBA_BIT * PLATFORM_BIT:
+	case GOOMBA_BIT + PLATFORM_BIT:
 	{
 		if (bodyA->categoryBits == GOOMBA_BIT && CollisionDirection.y == NOT_COLLIDED)
 		{
@@ -43,7 +43,16 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case WINGGOOMBA_BIT * PLATFORM_BIT:
+	case GOOMBA_BIT + QUESTIONBRICK_BIT:
+	{
+		if (bodyA->categoryBits == GOOMBA_BIT && CollisionDirection.y == NOT_COLLIDED)
+		{
+			Goomba* goomba = (Goomba*)(bodyA->GetExtra());
+			goomba->ChangeDirection();
+		}
+		break;
+	}
+	case WINGGOOMBA_BIT + PLATFORM_BIT:
 	{
 		if (bodyA->categoryBits == WINGGOOMBA_BIT && CollisionDirection.y == NOT_COLLIDED)
 		{
@@ -52,7 +61,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case KOOPA_BIT* PLATFORM_BIT:
+	case KOOPA_BIT + PLATFORM_BIT:
 	{
 		if (bodyA->categoryBits == KOOPA_BIT && CollisionDirection.y == NOT_COLLIDED)
 		{
@@ -61,7 +70,18 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case KOOPA_BIT* GOOMBA_BIT:
+	case KOOPA_BIT + QUESTIONBRICK_BIT:
+	{
+		if (bodyA->categoryBits == KOOPA_BIT && CollisionDirection.y == NOT_COLLIDED)
+		{
+			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
+			koopa->ChangeDirection();
+			QuestionBrick* questionBrick = (QuestionBrick*)(bodyB->GetExtra());
+			questionBrick->OnBeingHit();
+		}
+		break;
+	}
+	case KOOPA_BIT + GOOMBA_BIT:
 	{
 		if (bodyA->categoryBits == KOOPA_BIT)
 		{
@@ -78,7 +98,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case KOOPA_BIT* WINGGOOMBA_BIT:
+	case KOOPA_BIT + WINGGOOMBA_BIT:
 	{
 		if (bodyA->categoryBits == KOOPA_BIT)
 		{
@@ -95,7 +115,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case GOOMBA_BIT* PLAYER_BIT:
+	case GOOMBA_BIT + PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
 		{
@@ -115,7 +135,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case WINGGOOMBA_BIT* PLAYER_BIT:
+	case WINGGOOMBA_BIT + PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
 		{
@@ -135,7 +155,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case KOOPA_BIT* PLAYER_BIT:
+	case KOOPA_BIT + PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
 		{
@@ -155,7 +175,7 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		}
 		break;
 	}
-	case PLAYER_BIT* MUSHROOM_BIT:
+	case PLAYER_BIT + MUSHROOM_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
 		{
@@ -170,6 +190,24 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 			player->BecomeBig();
 			MushRoom* mushRoom = (MushRoom*)(bodyA->GetExtra());
 			mushRoom->OnHitPlayer();
+		}
+		break;
+	}
+	case PLAYER_BIT + LEAF_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->BecomRacoon();
+			Leaf * leaf = (Leaf*)(bodyB->GetExtra());
+			leaf->OnHitPlayer();
+		}
+		else if (bodyB->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->BecomRacoon();
+			Leaf* leaf = (Leaf*)(bodyA->GetExtra());
+			leaf->OnHitPlayer();
 		}
 		break;
 	}
@@ -289,6 +327,24 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 				WingGoomba* goomba = (WingGoomba*)(bodyA->GetExtra());
 				goomba->OnHitOnTheHead();
 			}
+		}
+		break;
+	}
+	case PLAYER_BIT * LEAF_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->BecomRacoon();
+			Leaf* leaf = (Leaf*)(bodyB->GetExtra());
+			leaf->OnHitPlayer();
+		}
+		else if (bodyB->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->BecomRacoon();
+			Leaf* leaf = (Leaf*)(bodyA->GetExtra());
+			leaf->OnHitPlayer();
 		}
 		break;
 	}
@@ -544,6 +600,15 @@ void  WorldListener::OnSensorExit(Body* bodyA, Body* bodyB)
 	switch (bodyA->categoryBits * bodyB->categoryBits)
 	{
 	case FOOT_BIT* PLATFORM_BIT:
+	{
+		if (bodyA->categoryBits == FOOT_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->OnExitGround();
+		}
+		break;
+	}
+	case FOOT_BIT* QUESTIONBRICK_BIT:
 	{
 		if (bodyA->categoryBits == FOOT_BIT)
 		{

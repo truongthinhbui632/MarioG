@@ -17,3 +17,17 @@
  <rect left="246" top = "154" width = "14" height="27" />
  <rect left="275" top = "154" width = "16" height="27" />
 </bigrunning>
+
+<racoonstanding>
+ <rect left="243" top = "634" width = "21" height="28" />
+</racoonstanding>
+
+<racoonrunning>
+ <rect left="243" top = "634" width = "21" height="28" />
+ <rect left="272" top = "634" width = "22" height="28" />
+</racoonrunning>
+
+<racoonflying>
+ <rect left="331" top = "714" width = "24" height="27" />
+ <rect left="361" top = "714" width = "24" height="28" />
+</racoonflying>

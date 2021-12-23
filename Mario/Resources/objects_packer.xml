@@ -24,3 +24,7 @@
 <coinbrick>
  <rect left="372" top = "135" width = "16" height="16" />
 </coinbrick>
+
+<leaf>
+ <rect left="300" top = "208" width = "16" height="14" />
+</leaf>

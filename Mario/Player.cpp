@@ -18,6 +18,7 @@ void Player::Create(World* world, float x, float y)
 {
 	isDead = false;
 	isBig = false;
+	isRacoon = false;
 	isGrounded = true;
 	jumpTime = 0;
 
@@ -37,6 +38,9 @@ void Player::Create(World* world, float x, float y)
 	bigStandingAnimation.AddRegion(p.GetRegion("bigstanding"));
 	bigMovingAnimation.AddRegion(p.GetRegion("bigrunning"));
 	bigMovingAnimation.SetFrameInterval(0.02);
+	racoonStandingAnimation.AddRegion(p.GetRegion("racoonstanding"));
+	racoonMovingAnimation.AddRegion(p.GetRegion("racoonrunning"));
+	racoonFlyingAnimation.AddRegion(p.GetRegion("racoonflying"));
 
 	//setup mainbody
 	BodyDef bodyDef;
@@ -47,7 +51,7 @@ void Player::Create(World* world, float x, float y)
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT;
+	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT | LEAF_BIT;
 	mainBody->PutExtra(this);
 
 	//create foot
@@ -113,6 +117,11 @@ void Player::HandleInput()
 		isGrounded = false;
 		jumpTime = 0;
 	}
+
+	if (Input::GetKey(DIK_UP) && isRacoon)
+	{
+		mainBody->SetVelocity(mainBody->GetVelocity().x, 3);
+	}
 }
 
 void Player::Render(SpriteBatch *batch)
@@ -146,14 +155,46 @@ void Player::Update(float dt)
 	{
 		if (mainBody->GetVelocity().x != 0)
 		{
-			if (isBig)
+			if (isRacoon)
 			{
-				SetRegion(*bigMovingAnimation.Next(dt));
+				SetRegion(*racoonMovingAnimation.Next(dt));
 			}
 			else
 			{
-				SetRegion(*movingAnimation.Next(dt));
+				if (isBig)
+				{
+					SetRegion(*bigMovingAnimation.Next(dt));
+				}
+				else
+				{
+					SetRegion(*movingAnimation.Next(dt));
+				}
 			}
+		}
+		else
+		{
+			if (isRacoon)
+			{
+				SetRegion(*racoonStandingAnimation.Next(dt));
+			}
+			else
+			{
+				if (isBig)
+				{
+					SetRegion(*bigStandingAnimation.Next(dt));
+				}
+				else
+				{
+					SetRegion(*standingAnimation.Next(dt));
+				}
+			}
+		}
+	}
+	else
+	{
+		if (isRacoon)
+		{
+			SetRegion(*racoonFlyingAnimation.Next(dt));
 		}
 		else
 		{
@@ -168,9 +209,20 @@ void Player::Update(float dt)
 		}
 	}
 
+	if (invincibleTime > 0)
+	{
+		invincibleTime -= dt;
+		flickeringTime -= dt;
+		if (flickeringTime < 0)
+		{
+			SetRegion(TextureRegion());
+			flickeringTime = 0.05f;
+		}
+	}
+
 	//update sprite position
 	SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y);
-	if (isBig)
+	if (isBig || isRacoon)
 	{
 		foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 26);
 		head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 26);
@@ -184,11 +236,25 @@ void Player::Update(float dt)
 
 void Player::DamagePlayer()
 {
+	if (invincibleTime > 0) return;
+
+	if (isRacoon)
+	{
+		isBig = true;
+		isRacoon = false;
+		invincibleTime = PLAYERINVINCIBLETIME;
+		flickeringTime = 0.05f;
+		return;
+	}
+
 	if (isBig)
 	{
 		isBig = false;
 		mainBody->SetSize(16 * 1.5f, 16 * 1.5f);
+		invincibleTime = PLAYERINVINCIBLETIME;
+		flickeringTime = 0.05f;
 	}
+	else
 	{
 		isDead = true;
 		mainBody->maskBits = 0;
@@ -217,6 +283,12 @@ void Player::JumpWhenKillEnemies()
 void Player::BecomeBig()
 {
 	isBig = true;
+	mainBody->SetSize(16 * 1.5f, 27 * 1.5f);
+}
+
+void Player::BecomRacoon()
+{
+	isRacoon = true;
 	mainBody->SetSize(16 * 1.5f, 27 * 1.5f);
 }
 

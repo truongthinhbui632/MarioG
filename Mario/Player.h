@@ -5,6 +5,8 @@
 #include "CollisionBit.h"
 #include "HanabiConsole.h"
 
+#define PLAYERINVINCIBLETIME 0.5
+
 //Main character
 class Player : public Sprite
 {
@@ -21,12 +23,19 @@ private:
 	Animation movingAnimation;
 	Animation bigStandingAnimation;
 	Animation bigMovingAnimation;
+	Animation racoonStandingAnimation;
+	Animation racoonMovingAnimation;
+	Animation racoonFlyingAnimation;
 
 	bool isBig;
+	bool isRacoon;
 	
 	bool isDead;
 
 	float jumpTime;
+	float power;
+	float invincibleTime;
+	float flickeringTime;
 	bool isGrounded;
 
 public:
@@ -49,6 +58,8 @@ public:
 	void JumpWhenKillEnemies();
 
 	void BecomeBig();
+
+	void BecomRacoon();
 
 	void Release();
 };

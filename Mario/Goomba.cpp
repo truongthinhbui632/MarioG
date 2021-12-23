@@ -28,7 +28,7 @@ void Goomba::Create(World* world, Texture* goombaTexture, float x, float y)
 	bodyDef.size.Set(15.5 * 1.5, 15.5 * 1.5);
 	body = world->CreateBody(bodyDef);
 	body->categoryBits = GOOMBA_BIT;
-	body->maskBits = PLAYER_BIT | PLATFORM_BIT | FOOT_BIT | KOOPA_BIT;
+	body->maskBits = PLAYER_BIT | PLATFORM_BIT | FOOT_BIT | KOOPA_BIT | QUESTIONBRICK_BIT;
 	body->PutExtra(this);
 
 	velocityX = -1;

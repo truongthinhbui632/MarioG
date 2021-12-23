@@ -93,6 +93,15 @@ void PlayScene::Create()
 		questionBricks.push_back(questionBrick);
 	}
 
+	//LeafQuestionBricks
+	std::vector<Shape::Rectangle> leafQuestionBrickRects = map->GetObjectGroup("LeafQuestionBricks")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = leafQuestionBrickRects.begin(); rect != leafQuestionBrickRects.end(); ++rect)
+	{
+		QuestionBrick* questionBrick = new QuestionBrick();
+		questionBrick->Create(&world, &objectsTexture, QuestionBrick::BrickType::WingType, rect->x, rect->y);
+		questionBricks.push_back(questionBrick);
+	}
+
 	//Coins
 	std::vector<Shape::Rectangle> coinRects = map->GetObjectGroup("Coins")->GetRects();
 	for (std::vector<Shape::Rectangle>::iterator rect = coinRects.begin(); rect != coinRects.end(); ++rect)

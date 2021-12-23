@@ -29,7 +29,7 @@ void QuestionBrick::Create(World* world, Texture* objectsTexture, BrickType bric
 	bodyDef.size.Set(16 * 1.5, 16 * 1.5);
 	body = world->CreateBody(bodyDef);
 	body->categoryBits = QUESTIONBRICK_BIT;
-	body->maskBits = PLAYER_BIT | FOOT_BIT | HEAD_BIT | MUSHROOM_BIT;
+	body->maskBits = PLAYER_BIT | FOOT_BIT | HEAD_BIT | MUSHROOM_BIT | GOOMBA_BIT | KOOPA_BIT | LEAF_BIT;
 	body->PutExtra(this);
 
 	this->objectsTexture = objectsTexture;
@@ -56,6 +56,7 @@ void QuestionBrick::Render(SpriteBatch* batch)
 			break;
 		}
 		case QuestionBrick::WingType:
+			leaf.Render(batch);
 			break;
 		}
 	}
@@ -77,6 +78,7 @@ void QuestionBrick::Update(float dt)
 			break;
 		}
 		case QuestionBrick::WingType:
+			leaf.Update(dt);
 			break;
 		}
 	}
@@ -101,6 +103,7 @@ void QuestionBrick::OnBeingHit()
 		break;
 	}
 	case QuestionBrick::WingType:
+		leaf.Create(world, objectsTexture, body->GetPosition().x, body->GetPosition().y + 16 * 1.5f);
 		break;
 	}
 
