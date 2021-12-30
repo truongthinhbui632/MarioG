@@ -29,43 +29,58 @@ void MarioGame::CreateGame()
 	//startScene.SetBatch(&batch);
 
 	// 3/play screen
-	playScene.Create();
-	playScene.SetBatch(&batch1);
+	playScene = new PlayScene();
+	playScene->Create();
+	playScene->SetBatch(&batch1);
 
-	bonusScene1.Create();
-	bonusScene1.SetBatch(&batch2);
+	bonusScene1 = new BonusScene1();
+	bonusScene1->Create();
+	bonusScene1->SetBatch(&batch2);
 
 	//// 4/gameover scene
 	//gameOverScene.Create();
 	//gameOverScene.SetBatch(&batch);
 
 
-	SetScene(&playScene);
-	scenes = &playScene;
+	SetScene(playScene);
+	scenes = playScene;
 	pauseTime = 0;
 }
 void MarioGame::UpdateGame(float dt)
 {
 	Game::UpdateGame(dt);
 	
-	if (scenes == &playScene)
+	if (scenes == playScene)
 	{
-		if (playScene.isSwitchToBonusScene == true)
+		if (playScene->isSwitchToBonusScene == true)
 		{
-			SetScene(&bonusScene1);
-			scenes = &bonusScene1;
-			playScene.isSwitchToBonusScene = false;
+			SetScene(bonusScene1);
+			bonusScene1->MovePlayerToPortal();
+			scenes = bonusScene1;
+			playScene->isSwitchToBonusScene = false;
 		}
 	}
 
-	if (scenes == &bonusScene1)
+	if (scenes == bonusScene1)
 	{
-		if (bonusScene1.isSwitchToMainScene == true)
+		if (bonusScene1->isSwitchToMainScene == true)
 		{
-			SetScene(&playScene);
-			scenes = &playScene;
-			bonusScene1.isSwitchToMainScene = false;
+			SetScene(playScene);
+			playScene->MovePlayerToPortal();
+			scenes = playScene;
+			bonusScene1->isSwitchToMainScene = false;
 		}
+	}
+
+	if (playScene->IsPlayerDead())
+	{
+		PlayScene* newPlayScene = new PlayScene();
+		newPlayScene->Create();
+		newPlayScene->SetBatch(&batch1);
+		playScene->Release();
+		delete playScene;
+		playScene = newPlayScene;
+		SetScene(playScene);
 	}
 
 	/*if (Input::GetKeyDown(DIK_ESCAPE))
@@ -107,7 +122,9 @@ void MarioGame::Release()
 	Game::Release();
 	batch1.Release();
 	batch2.Release();
-	playScene.Release();
-	bonusScene1.Release();
+	playScene->Release();
+	bonusScene1->Release();
+	delete playScene;
+	delete bonusScene1;
 }
 

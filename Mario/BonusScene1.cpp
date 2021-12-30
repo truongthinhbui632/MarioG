@@ -39,6 +39,7 @@ void BonusScene1::Create()
 	//get player position
 	Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
 	player.Create(&world, playerRect.x, playerRect.y);
+	startingPosition.Set(playerRect.x, playerRect.y);
 
 	//set cam position
 	cam.SetPosition(640 / 2, 480 / 2);
@@ -53,6 +54,13 @@ void BonusScene1::Create()
 		coin->Create(&world, &objectsTexture, rect->x, rect->y);
 		coins.push_back(coin);
 	}
+
+	//Portals
+	std::vector<Shape::Rectangle> portalRects = map->GetObjectGroup("Portals")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = portalRects.begin(); rect != portalRects.end(); ++rect)
+	{
+		portal.Create(&world, &objectsTexture, rect->x, rect->y);
+	}
 }
 
 void BonusScene1::HandlePhysics(float dt)
@@ -60,12 +68,18 @@ void BonusScene1::HandlePhysics(float dt)
 	//handle input of player
 	player.HandleInput();
 
-	if (Input::GetKeyDown(DIK_S))
+	if (Input::GetKeyDown(DIK_UP) && player.isOnPortal)
 	{
 		isSwitchToMainScene = true;
 	}
 
 	world.Update(dt);
+}
+
+void BonusScene1::MovePlayerToPortal()
+{
+	player.SetBodyPosition(startingPosition.x, startingPosition.y);
+	player.isOnPortal = false;
 }
 
 void BonusScene1::Render()

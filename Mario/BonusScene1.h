@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Platform.h"
 #include "Coin.h"
+#include "Portal.h"
 
 class BonusScene1 : public Scene
 {
@@ -36,6 +37,10 @@ private:
 	//objects
 	std::vector<Coin*> coins;
 
+	Portal portal;
+
+	Vector2 startingPosition;
+
 public:
 	BonusScene1();
 	~BonusScene1();
@@ -45,6 +50,8 @@ public:
 	void SetBatch(SpriteBatch* batch);
 	void HandlePhysics(float dt);
 	void Render();
+
+	void MovePlayerToPortal();
 
 	void Create() override;
 	void Update(float dt) override;

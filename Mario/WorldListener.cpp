@@ -500,18 +500,9 @@ void WorldListener::OnSersorEnter(Body* bodyA, Body* bodyB)
 
 void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 {
-	switch (bodyA->categoryBits * bodyB->categoryBits)
+	switch (bodyA->categoryBits + bodyB->categoryBits)
 	{
-	case FOOT_BIT* PLATFORM_BIT:
-	{
-		if (bodyA->categoryBits == FOOT_BIT)
-		{
-			Player* player = (Player*)(bodyA->GetExtra());
-			player->OnGrounded();
-		}
-		break;
-	}
-	case FOOT_BIT* QUESTIONBRICK_BIT:
+	case FOOT_BIT + PLATFORM_BIT:
 	{
 		if (bodyA->categoryBits == FOOT_BIT)
 		{
@@ -520,7 +511,16 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 		}
 		break;
 	}
-	case FOOT_BIT* GOOMBA_BIT:
+	case FOOT_BIT + QUESTIONBRICK_BIT:
+	{
+		if (bodyA->categoryBits == FOOT_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->OnGrounded();
+		}
+		break;
+	}
+	case FOOT_BIT + GOOMBA_BIT:
 	{
 		if (bodyA->categoryBits == GOOMBA_BIT)
 		{
@@ -541,7 +541,7 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 		}
 		break;
 	}
-	case FOOT_BIT* WINGGOOMBA_BIT:
+	case FOOT_BIT + WINGGOOMBA_BIT:
 	{
 		if (bodyA->categoryBits == WINGGOOMBA_BIT)
 		{
@@ -562,7 +562,7 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 		}
 		break;
 	}
-	case FOOT_BIT* KOOPA_BIT:
+	case FOOT_BIT + KOOPA_BIT:
 	{
 		if (bodyA->categoryBits == KOOPA_BIT)
 		{
@@ -583,12 +583,21 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 		}
 		break;
 	}
-	case HEAD_BIT* QUESTIONBRICK_BIT:
+	case HEAD_BIT + QUESTIONBRICK_BIT:
 	{
 		if (bodyA->categoryBits == HEAD_BIT)
 		{
 			QuestionBrick* questionBrick = (QuestionBrick*)(bodyB->GetExtra());
 			questionBrick->OnBeingHit();
+		}
+		break;
+	}
+	case PLAYER_BIT + PORTAL_BIT:
+	{
+		if (bodyA->categoryBits == PORTAL_BIT)
+		{
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->SetOnPortal(true);
 		}
 		break;
 	}
@@ -614,6 +623,15 @@ void  WorldListener::OnSensorExit(Body* bodyA, Body* bodyB)
 		{
 			Player* player = (Player*)(bodyA->GetExtra());
 			player->OnExitGround();
+		}
+		break;
+	}
+	case PLAYER_BIT * PORTAL_BIT:
+	{
+		if (bodyA->categoryBits == PORTAL_BIT)
+		{
+			Player* player = (Player*)(bodyB->GetExtra());
+			player->SetOnPortal(false);
 		}
 		break;
 	}

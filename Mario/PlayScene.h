@@ -13,6 +13,7 @@
 #include "QuestionBrick.h"
 #include "Coin.h"
 #include "CoinBrick.h"
+#include "Portal.h"
 
 class PlayScene: public Scene
 {
@@ -46,6 +47,7 @@ private:
 	std::vector<QuestionBrick*> questionBricks;
 	std::vector<Coin*> coins;
 	std::vector<CoinBrick*> coinBricks;
+	Portal portal;
 
 public:
 	PlayScene();
@@ -58,7 +60,9 @@ public:
 	void Render();
 	void Create() override;
 	void Update(float dt) override;
+	void MovePlayerToPortal();
 	void Release() override;
+	bool IsPlayerDead();
 	bool isOver();
 };
 

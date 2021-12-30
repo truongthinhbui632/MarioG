@@ -29,7 +29,7 @@ void QuestionBrick::Create(World* world, Texture* objectsTexture, BrickType bric
 	bodyDef.size.Set(16 * 1.5, 16 * 1.5);
 	body = world->CreateBody(bodyDef);
 	body->categoryBits = QUESTIONBRICK_BIT;
-	body->maskBits = PLAYER_BIT | FOOT_BIT | HEAD_BIT | MUSHROOM_BIT | GOOMBA_BIT | KOOPA_BIT | LEAF_BIT;
+	body->maskBits = PLAYER_BIT | FOOT_BIT | HEAD_BIT | MUSHROOM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | KOOPA_BIT | LEAF_BIT;
 	body->PutExtra(this);
 
 	this->objectsTexture = objectsTexture;

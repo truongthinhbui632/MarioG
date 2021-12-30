@@ -12,10 +12,10 @@ class MarioGame : public Game
 private:
 	SpriteBatch batch1;
 	SpriteBatch batch2;
-	PlayScene playScene;
+	PlayScene *playScene;
 	IntroScene introScene;
 	StartScene startScene;
-	BonusScene1 bonusScene1;
+	BonusScene1 *bonusScene1;
 	GameOverScene gameOverScene;
 	float pauseTime;
 	Scene *scenes;

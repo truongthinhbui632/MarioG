@@ -119,6 +119,13 @@ void PlayScene::Create()
 		coinBrick->Create(&world, &objectsTexture, rect->x, rect->y);
 		coinBricks.push_back(coinBrick);
 	}
+
+	//Portals
+	std::vector<Shape::Rectangle> portalRects = map->GetObjectGroup("Portals")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = portalRects.begin(); rect != portalRects.end(); ++rect)
+	{
+		portal.Create(&world, &objectsTexture, rect->x, rect->y);
+	}
 }
 
 void PlayScene::HandlePhysics(float dt)
@@ -209,7 +216,7 @@ void PlayScene::Update(float dt)
 		}
 	}
 
-	if(Input::GetKeyDown(DIK_S))
+	if(Input::GetKeyDown(DIK_DOWN) && player.isOnPortal)
 	{
 		isSwitchToBonusScene = true;
 	}
@@ -277,6 +284,17 @@ void PlayScene::Update(float dt)
 	//RENDER
 	Render();
 
+}
+
+bool PlayScene::IsPlayerDead()
+{
+	return player.IsDead();
+}
+
+void PlayScene::MovePlayerToPortal()
+{
+	player.SetBodyPosition(portal.GetPosition().x, portal.GetPosition().y);
+	player.isOnPortal = false;
 }
 
 void PlayScene::Release()

@@ -21,17 +21,21 @@ private:
 	//Animations
 	Animation standingAnimation;
 	Animation movingAnimation;
+	Animation jumpingAnimation;
 	Animation bigStandingAnimation;
 	Animation bigMovingAnimation;
+	Animation bigJumpingAnimation;
 	Animation racoonStandingAnimation;
 	Animation racoonMovingAnimation;
 	Animation racoonFlyingAnimation;
+	Animation marioDeadAnimation;
 
 	bool isBig;
 	bool isRacoon;
 	
 	bool isDead;
 
+	float timeToDie;
 	float jumpTime;
 	float power;
 	float invincibleTime;
@@ -42,7 +46,11 @@ public:
 	Player();
 	~Player();
 
+	bool isOnPortal;
+
 	void Create(World* world, float x, float y);
+
+	void SetBodyPosition(float x, float y);
 
 	void HandleInput();
 
@@ -60,6 +68,10 @@ public:
 	void BecomeBig();
 
 	void BecomRacoon();
+
+	void SetOnPortal(bool onPortal);
+
+	bool IsDead();
 
 	void Release();
 };

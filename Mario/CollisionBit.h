@@ -11,3 +11,4 @@
 #define COIN_BIT 1024
 #define COINBRICK_BIT 8192
 #define LEAF_BIT 32768
+#define PORTAL_BIT 65536

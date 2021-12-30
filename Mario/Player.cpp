@@ -21,6 +21,8 @@ void Player::Create(World* world, float x, float y)
 	isRacoon = false;
 	isGrounded = true;
 	jumpTime = 0;
+	timeToDie = 0;
+	isOnPortal = false;
 
 	//get characterTexture
 	texture = Texture("Resources/mario.png");
@@ -35,29 +37,32 @@ void Player::Create(World* world, float x, float y)
 	standingAnimation.AddRegion(p.GetRegion("standing"));
 	movingAnimation.AddRegion(p.GetRegion("running"));
 	movingAnimation.SetFrameInterval(0.02);
+	jumpingAnimation.AddRegion(p.GetRegion("jumping"));
 	bigStandingAnimation.AddRegion(p.GetRegion("bigstanding"));
 	bigMovingAnimation.AddRegion(p.GetRegion("bigrunning"));
 	bigMovingAnimation.SetFrameInterval(0.02);
+	bigJumpingAnimation.AddRegion(p.GetRegion("bigjumping"));
 	racoonStandingAnimation.AddRegion(p.GetRegion("racoonstanding"));
 	racoonMovingAnimation.AddRegion(p.GetRegion("racoonrunning"));
 	racoonFlyingAnimation.AddRegion(p.GetRegion("racoonflying"));
+	marioDeadAnimation.AddRegion(p.GetRegion("mariodead"));
 
 	//setup mainbody
 	BodyDef bodyDef;
 	bodyDef.bodyType = Body::BodyType::Dynamic;
 	bodyDef.linearDrag.Set(10, 1);
 	bodyDef.mass = 2;
-	bodyDef.size.Set(16 * 1.5, 16 * 1.5);
+	bodyDef.size.Set(15.5 * 1.5, 15.5 * 1.5);
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT | LEAF_BIT;
+	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT | LEAF_BIT | PORTAL_BIT;
 	mainBody->PutExtra(this);
 
 	//create foot
 	BodyDef footDef;
 	footDef.bodyType = Body::BodyType::Kinematic;
-	footDef.size.Set(16 * 1.49, 16 * 1.49);
+	footDef.size.Set(15.5 * 1.49, 15.5 * 1.49);
 	footDef.isSensor = true;
 	foot = world->CreateBody(footDef);
 	foot->categoryBits = FOOT_BIT;
@@ -67,7 +72,7 @@ void Player::Create(World* world, float x, float y)
 	//create head
 	BodyDef headDef;
 	headDef.bodyType = Body::BodyType::Kinematic;
-	headDef.size.Set(16 * 1.49, 16 * 1.49);
+	headDef.size.Set(15.5 * 1.49, 15.5 * 1.49);
 	headDef.isSensor = true;
 	head = world->CreateBody(headDef);
 	head->categoryBits = HEAD_BIT;
@@ -78,7 +83,7 @@ void Player::Create(World* world, float x, float y)
 
 void Player::HandleInput()
 {
-	if (isDead) return;
+	if (isDead || timeToDie > 0) return;
 
 	//Move right
 	if (Input::GetKey(DIK_RIGHT))
@@ -118,12 +123,6 @@ void Player::HandleInput()
 		jumpTime = 0;
 	}
 
-	////jump only if grounded
-	//if (Input::GetKeyDown(DIK_DOWN) && isGroundedOnPortal)
-	//{
-	//	
-	//}
-
 	//if (IsMovingThroughPortal)
 	//{
 	//	mainBody->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 5);
@@ -149,6 +148,15 @@ void Player::Render(SpriteBatch *batch)
 void Player::Update(float dt)
 {
 	if (isDead) return;
+
+	if (timeToDie > 0)
+	{
+		timeToDie -= dt;
+		if (timeToDie <= 0)
+		{
+			isDead = true;
+		}
+	}
 
 	//flip if necessary
 	if (mainBody->GetVelocity().x > 0)
@@ -213,11 +221,11 @@ void Player::Update(float dt)
 		{
 			if (isBig)
 			{
-				SetRegion(*bigStandingAnimation.Next(dt));
+				SetRegion(*bigJumpingAnimation.Next(dt));
 			}
 			else
 			{
-				SetRegion(*standingAnimation.Next(dt));
+				SetRegion(*jumpingAnimation.Next(dt));
 			}
 		}
 	}
@@ -233,6 +241,11 @@ void Player::Update(float dt)
 		}
 	}
 
+	if (timeToDie > 0)
+	{
+		SetRegion(*marioDeadAnimation.Next(dt));
+	}
+
 	//update sprite position
 	SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y);
 	if (isBig || isRacoon)
@@ -245,6 +258,11 @@ void Player::Update(float dt)
 		foot->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y - 15);
 		head->SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y + 15);
 	}
+}
+
+void Player::SetBodyPosition(float x, float y)
+{
+	mainBody->SetPosition(x, y);
 }
 
 void Player::DamagePlayer()
@@ -263,16 +281,22 @@ void Player::DamagePlayer()
 	if (isBig)
 	{
 		isBig = false;
-		mainBody->SetSize(16 * 1.5f, 16 * 1.5f);
+		mainBody->SetSize(15.5 * 1.5f, 15.5 * 1.5f);
 		invincibleTime = PLAYERINVINCIBLETIME;
 		flickeringTime = 0.05f;
 	}
 	else
 	{
-		isDead = true;
+		timeToDie = 0.5f;
 		mainBody->maskBits = 0;
 		foot->maskBits = 0;
+		mainBody->SetVelocity(0, 10);
 	}
+}
+
+bool Player::IsDead()
+{
+	return isDead;
 }
 
 void Player::OnGrounded()
@@ -296,13 +320,18 @@ void Player::JumpWhenKillEnemies()
 void Player::BecomeBig()
 {
 	isBig = true;
-	mainBody->SetSize(16 * 1.5f, 27 * 1.5f);
+	mainBody->SetSize(15.5 * 1.5f, 27 * 1.5f);
 }
 
 void Player::BecomRacoon()
 {
 	isRacoon = true;
-	mainBody->SetSize(16 * 1.5f, 27 * 1.5f);
+	mainBody->SetSize(15.5 * 1.5f, 27 * 1.5f);
+}
+
+void Player::SetOnPortal(bool onPortal)
+{
+	isOnPortal = onPortal;
 }
 
 void Player::Release()

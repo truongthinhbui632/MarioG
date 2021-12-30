@@ -8,6 +8,7 @@
 #include "QuestionBrick.h"
 #include "Coin.h"
 #include "CoinBrick.h"
+#include "Portal.h"
 
 class WorldListener : public WorldContactListener
 {
