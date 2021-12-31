@@ -23,6 +23,7 @@ void Player::Create(World* world, float x, float y)
 	jumpTime = 0;
 	timeToDie = 0;
 	isOnPortal = false;
+	koopa = nullptr;
 
 	//get characterTexture
 	texture = Texture("Resources/mario.png");
@@ -38,13 +39,22 @@ void Player::Create(World* world, float x, float y)
 	movingAnimation.AddRegion(p.GetRegion("running"));
 	movingAnimation.SetFrameInterval(0.02);
 	jumpingAnimation.AddRegion(p.GetRegion("jumping"));
+	carryingAnimation.AddRegion(p.GetRegion("carrying"));
+	carryingRunningAnimation.AddRegion(p.GetRegion("carryingrunning"));
+
 	bigStandingAnimation.AddRegion(p.GetRegion("bigstanding"));
 	bigMovingAnimation.AddRegion(p.GetRegion("bigrunning"));
 	bigMovingAnimation.SetFrameInterval(0.02);
 	bigJumpingAnimation.AddRegion(p.GetRegion("bigjumping"));
+	bigCarryingAnimation.AddRegion(p.GetRegion("bigcarrying"));
+	bigCarryingRunningAnimation.AddRegion(p.GetRegion("bigcarryingrunning"));
+
 	racoonStandingAnimation.AddRegion(p.GetRegion("racoonstanding"));
 	racoonMovingAnimation.AddRegion(p.GetRegion("racoonrunning"));
 	racoonFlyingAnimation.AddRegion(p.GetRegion("racoonflying"));
+	racoonCarryingAnimation.AddRegion(p.GetRegion("racooncarrying"));
+	racoonCarryingRunningAnimation.AddRegion(p.GetRegion("racooncarryingrunning"));
+
 	marioDeadAnimation.AddRegion(p.GetRegion("mariodead"));
 
 	//setup mainbody
@@ -56,7 +66,7 @@ void Player::Create(World* world, float x, float y)
 	bodyDef.position.Set(x, y);
 	mainBody = world->CreateBody(bodyDef);
 	mainBody->categoryBits = PLAYER_BIT;
-	mainBody->maskBits = PLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT | LEAF_BIT | PORTAL_BIT;
+	mainBody->maskBits = PLATFORM_BIT | DEADPLATFORM_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT | MUSHROOM_BIT | KOOPA_BIT | COIN_BIT | COINBRICK_BIT | LEAF_BIT | PORTAL_BIT;
 	mainBody->PutExtra(this);
 
 	//create foot
@@ -133,6 +143,13 @@ void Player::HandleInput()
 	if (Input::GetKey(DIK_UP) && isRacoon)
 	{
 		mainBody->SetVelocity(mainBody->GetVelocity().x, 3);
+	}
+
+	//Shoot koopa
+	if (Input::GetKeyDown(DIK_Z) && koopa != nullptr)
+	{
+		koopa->OnHitOnTheHead(!IsFlipX());
+		koopa = nullptr;
 	}
 }
 
@@ -246,6 +263,57 @@ void Player::Update(float dt)
 		SetRegion(*marioDeadAnimation.Next(dt));
 	}
 
+	if (koopa != nullptr)
+	{
+		//Hold koopa
+		if (!this->IsFlipX())
+		{
+			koopa->body->SetPosition(mainBody->GetPosition().x + mainBody->GetSize().x, mainBody->GetPosition().y + 4.5 * 1.5f);
+		}
+		else
+		{
+			koopa->body->SetPosition(mainBody->GetPosition().x - mainBody->GetSize().x, mainBody->GetPosition().y + 4.5 * 1.5f);
+		}
+
+		//Update animation
+		if (mainBody->GetVelocity().x != 0)
+		{
+			if (isRacoon)
+			{
+				SetRegion(*racoonCarryingRunningAnimation.Next(dt));
+			}
+			else
+			{
+				if (isBig)
+				{
+					SetRegion(*bigCarryingRunningAnimation.Next(dt));
+				}
+				else
+				{
+					SetRegion(*carryingRunningAnimation.Next(dt));
+				}
+			}
+		}
+		else
+		{
+			if (isRacoon)
+			{
+				SetRegion(*racoonCarryingAnimation.Next(dt));
+			}
+			else
+			{
+				if (isBig)
+				{
+					SetRegion(*bigCarryingAnimation.Next(dt));
+				}
+				else
+				{
+					SetRegion(*carryingAnimation.Next(dt));
+				}
+			}
+		}
+	}
+
 	//update sprite position
 	SetPosition(mainBody->GetPosition().x, mainBody->GetPosition().y);
 	if (isBig || isRacoon)
@@ -265,8 +333,17 @@ void Player::SetBodyPosition(float x, float y)
 	mainBody->SetPosition(x, y);
 }
 
-void Player::DamagePlayer()
+void Player::DamagePlayer(bool kill)
 {
+	if (kill)
+	{
+		timeToDie = 0.5f;
+		mainBody->maskBits = 0;
+		foot->maskBits = 0;
+		mainBody->SetVelocity(0, 10);
+		return;
+	}
+
 	if (invincibleTime > 0) return;
 
 	if (isRacoon)
@@ -292,6 +369,12 @@ void Player::DamagePlayer()
 		foot->maskBits = 0;
 		mainBody->SetVelocity(0, 10);
 	}
+}
+
+void Player::PickUpKoopa(Koopa* koopa)
+{
+	this->koopa = koopa;
+	koopa->body->maskBits = 0;
 }
 
 bool Player::IsDead()

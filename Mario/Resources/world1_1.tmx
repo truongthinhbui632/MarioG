@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="165" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="137">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="165" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="142">
  <tileset firstgid="1" name="1-1" tilewidth="16" tileheight="16" tilecount="8010" columns="178">
   <image source="1-1.png" width="2848" height="720"/>
  </tileset>
@@ -61,16 +61,16 @@
   <object id="6" x="1536.5" y="401.25" width="78.5" height="14.5"/>
   <object id="7" x="1665" y="400.75" width="574.167" height="15.5"/>
   <object id="9" x="2256.42" y="400.333" width="383.333" height="15.6667"/>
-  <object id="13" x="2637.92" y="224" width="9.75" height="176"/>
+  <object id="13" x="2637.92" y="-96" width="9.75" height="496"/>
   <object id="15" x="-8.5" y="227.25" width="10.75" height="172"/>
   <object id="16" x="240.75" y="353" width="46.5" height="46"/>
   <object id="17" x="273" y="320.25" width="46.25" height="80.25"/>
   <object id="18" x="353" y="353" width="30.5" height="46.25"/>
   <object id="19" x="400" y="352.75" width="79.75" height="47"/>
   <object id="20" x="512.5" y="367.25" width="95" height="32.25"/>
-  <object id="23" x="1264" y="368.75" width="175.25" height="30.75"/>
-  <object id="24" x="1295.5" y="336.5" width="143.75" height="32.25"/>
-  <object id="25" x="1327.75" y="304.75" width="112.25" height="31.25"/>
+  <object id="23" x="1264" y="368.75" width="171.25" height="30.75"/>
+  <object id="24" x="1295.5" y="336.5" width="139.75" height="32.25"/>
+  <object id="25" x="1327.75" y="304.75" width="107.583" height="31.25"/>
   <object id="26" x="1504.25" y="319.25" width="31.75" height="17"/>
   <object id="27" x="1568" y="384.25" width="47.5" height="16.5"/>
   <object id="33" x="1664.25" y="384.5" width="47.5" height="15.25"/>
@@ -82,15 +82,24 @@
   <object id="35" x="1792.62" y="368.462" width="30.6061" height="31.447"/>
   <object id="36" x="2143.83" y="352" width="47.25" height="47.3333"/>
   <object id="37" x="2257.42" y="352.083" width="29.25" height="48"/>
-  <object id="38" x="2255.92" y="-252.417" width="30.5833" height="556"/>
+  <object id="38" x="2255.92" y="95.583" width="30.5833" height="208"/>
   <object id="39" x="2320.08" y="368.583" width="31.25" height="31.8333"/>
   <object id="48" x="1312.94" y="128.333" width="61.7424" height="30.1364"/>
   <object id="49" x="1409" y="176.849" width="61.6969" height="14.1818"/>
   <object id="51" x="1440.58" y="112.333" width="14.5455" height="14.1818"/>
   <object id="50" x="1487.69" y="160.424" width="206.576" height="14.1818"/>
+  <object id="138" x="1423.5" y="304.667" width="15" height="94"/>
+  <object id="139" x="1612.75" y="353.25" width="3.125" height="62.75"/>
+  <object id="140" x="1663.88" y="352.625" width="3.125" height="62.75"/>
+ </objectgroup>
+ <objectgroup id="16" name="DeadPlatforms">
+  <object id="141" x="0" y="416" width="2650" height="16"/>
  </objectgroup>
  <objectgroup id="14" name="Portals">
-  <object id="136" x="2326.67" y="352.667" width="17.3333" height="16"/>
+  <object id="136" x="2262" y="78.667" width="17.3333" height="16"/>
+ </objectgroup>
+ <objectgroup id="15" name="PortalOuts">
+  <object id="137" x="2326" y="350" width="19.3333" height="18"/>
  </objectgroup>
  <objectgroup id="9" name="Koopas">
   <object id="92" x="582" y="350" width="16" height="16"/>
@@ -134,6 +143,6 @@
   <object id="79" x="1040" y="368" width="16" height="16"/>
  </objectgroup>
  <objectgroup id="4" name="Player">
-  <object id="55" x="1914.67" y="329.666" width="13.3333" height="9.33333"/>
+  <object id="55" x="446.003" y="326.333" width="13.3333" height="9.33333"/>
  </objectgroup>
 </map>

@@ -7,6 +7,7 @@
 #include "WorldListener.h"
 #include "Player.h"
 #include "Platform.h"
+#include "DeadPlatform.h"
 #include "Goomba.h"
 #include "WingGoomba.h"
 #include "Koopa.h"
@@ -48,6 +49,7 @@ private:
 	std::vector<Coin*> coins;
 	std::vector<CoinBrick*> coinBricks;
 	Portal portal;
+	Vector2 portalOutPosition;
 
 public:
 	PlayScene();

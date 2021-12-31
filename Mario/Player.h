@@ -4,6 +4,7 @@
 #include "HanabiWorld.h"
 #include "CollisionBit.h"
 #include "HanabiConsole.h"
+#include "Koopa.h"
 
 #define PLAYERINVINCIBLETIME 0.5
 
@@ -22,12 +23,18 @@ private:
 	Animation standingAnimation;
 	Animation movingAnimation;
 	Animation jumpingAnimation;
+	Animation carryingAnimation;
+	Animation carryingRunningAnimation;
 	Animation bigStandingAnimation;
 	Animation bigMovingAnimation;
 	Animation bigJumpingAnimation;
+	Animation bigCarryingAnimation;
+	Animation bigCarryingRunningAnimation;
 	Animation racoonStandingAnimation;
 	Animation racoonMovingAnimation;
 	Animation racoonFlyingAnimation;
+	Animation racoonCarryingAnimation;
+	Animation racoonCarryingRunningAnimation;
 	Animation marioDeadAnimation;
 
 	bool isBig;
@@ -41,6 +48,8 @@ private:
 	float invincibleTime;
 	float flickeringTime;
 	bool isGrounded;
+
+	Koopa* koopa;
 
 public:
 	Player();
@@ -58,7 +67,7 @@ public:
 
 	void Update(float dt);
 
-	void DamagePlayer();
+	void DamagePlayer(bool kill = false);
 
 	void OnExitGround();
 	void OnGrounded();
@@ -72,6 +81,8 @@ public:
 	void SetOnPortal(bool onPortal);
 
 	bool IsDead();
+
+	void PickUpKoopa(Koopa *koopa);
 
 	void Release();
 };

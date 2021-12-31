@@ -42,22 +42,22 @@ void Koopa::Create(World* world, Texture* goombaTexture, float x, float y)
 
 void Koopa::Render(SpriteBatch* batch)
 {
-	if (isDead) return;
+	//if (isDead) return;
 
 	batch->Draw(*this);
 }
 
 void Koopa::Update(float dt)
 {
-	if (isDead)
-	{
-		if (body != nullptr)
-		{
-			world->DestroyBody(body);
-			body = nullptr;
-		}
-		return;
-	}
+	//if (isDead)
+	//{
+	//	if (body != nullptr)
+	//	{
+	//		world->DestroyBody(body);
+	//		body = nullptr;
+	//	}
+	//	return;
+	//}
 
 	if (health > 2)
 	{
@@ -80,16 +80,43 @@ void Koopa::Update(float dt)
 		invincibleTime -= dt;
 	}
 
+	if (shellTime > 0)
+	{
+		shellTime -= dt;
+
+		if (shellTime <= 1)
+		{
+			flickeringTime -= dt;
+			if (flickeringTime < 0)
+			{
+				SetRegion(TextureRegion());
+				flickeringTime = 0.05f;
+			}
+		}
+
+		if (shellTime <= 0)
+		{
+			isInShell = false;
+			body->maskBits = PLAYER_BIT | PLATFORM_BIT | FOOT_BIT;
+			health = 3;
+			velocityX = -1;
+		}
+	}
+
 	body->SetVelocity(velocityX, body->GetVelocity().y);
 
 	this->SetPosition(body->GetPosition().x, body->GetPosition().y);
 }
 
 
-void Koopa::OnHitOnTheHead()
+void Koopa::OnHitOnTheHead(bool right)
 {
 	if (invincibleTime > 0) return;
 	invincibleTime = KOOPAINVINCIBLETIME;
+	
+	isInShell = true;
+	shellTime = 5;
+	flickeringTime = 0.1f;
 
 	health--;
 	if (health <= 0)
@@ -99,10 +126,18 @@ void Koopa::OnHitOnTheHead()
 	}
 	else
 	{
-		if (health == 1)
+		if (health <= 1)
 		{
-			velocityX = 5;
-			body->maskBits = body->maskBits | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT;
+			if (right)
+			{
+				velocityX = 5;
+			}
+			else
+			{
+				velocityX = -5;
+			}
+
+			body->maskBits = PLAYER_BIT | PLATFORM_BIT | FOOT_BIT | GOOMBA_BIT | WINGGOOMBA_BIT | QUESTIONBRICK_BIT;
 		}
 		else
 		{
@@ -118,7 +153,7 @@ void Koopa::ChangeDirection()
 	Flip(velocityX > 0 ? false : true, false);
 }
 
-bool Koopa::IsDead()
+bool Koopa::IsInShell()
 {
-	return isDead;
+	return isInShell;
 }

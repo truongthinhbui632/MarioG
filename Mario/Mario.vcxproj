@@ -150,6 +150,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinBrick.h" />
     <ClInclude Include="CollisionBit.h" />
+    <ClInclude Include="DeadPlatform.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Koopa.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="BonusScene1.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinBrick.cpp" />
+    <ClCompile Include="DeadPlatform.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopa.cpp" />

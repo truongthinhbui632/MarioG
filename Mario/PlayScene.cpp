@@ -36,6 +36,13 @@ void PlayScene::Create()
 		Platform platform(&world, rect->x, rect->y, rect->width, rect->height);
 	}
 
+	//create deadplatform
+	std::vector<Shape::Rectangle> deadPlatformRects = map->GetObjectGroup("DeadPlatforms")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = deadPlatformRects.begin(); rect != deadPlatformRects.end(); ++rect)
+	{
+		DeadPlatform deadPlatform(&world, rect->x, rect->y, rect->width, rect->height);
+	}
+
 	//get player position
 	Shape::Rectangle playerRect = map->GetObjectGroup("Player")->GetRects().front();
 	player.Create(&world, playerRect.x, playerRect.y);
@@ -125,6 +132,13 @@ void PlayScene::Create()
 	for (std::vector<Shape::Rectangle>::iterator rect = portalRects.begin(); rect != portalRects.end(); ++rect)
 	{
 		portal.Create(&world, &objectsTexture, rect->x, rect->y);
+	}
+
+	//Get PortalOut position
+	std::vector<Shape::Rectangle> portalOutRects = map->GetObjectGroup("PortalOuts")->GetRects();
+	for (std::vector<Shape::Rectangle>::iterator rect = portalOutRects.begin(); rect != portalOutRects.end(); ++rect)
+	{
+		portalOutPosition.Set(rect->x, rect->y);
 	}
 }
 
@@ -224,19 +238,24 @@ void PlayScene::Update(float dt)
 	player.Update(dt);
 	
 	//update camera
-	if (player.GetPosition().y > cam.GetPosition().y + 150)
+	if (player.GetPosition().y > 480/2)
 	{
-		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y - 150);
+		cam.SetPosition(cam.GetPosition().x, player.GetPosition().y);
 	}
 	else
 	{
-		if (player.GetPosition().y < cam.GetPosition().y - 150)
+		if (player.GetPosition().y < 480/2)
 		{
-			cam.SetPosition(cam.GetPosition().x, player.GetPosition().y + 150);
+			cam.SetPosition(cam.GetPosition().x, 480/2);
 		}
 	}
 
-	cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, 480/2);
+	if (player.GetPosition().y > 350)
+	{
+		cam.SetPosition(cam.GetPosition().x, 350);
+	}
+
+	cam.SetPosition(player.GetPosition().x > 640/2 ? player.GetPosition().x : 640/2, cam.GetPosition().y);
 
 
 	//update mushrooms
@@ -293,7 +312,7 @@ bool PlayScene::IsPlayerDead()
 
 void PlayScene::MovePlayerToPortal()
 {
-	player.SetBodyPosition(portal.GetPosition().x, portal.GetPosition().y);
+	player.SetBodyPosition(portalOutPosition.x, portalOutPosition.y);
 	player.isOnPortal = false;
 }
 

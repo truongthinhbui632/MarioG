@@ -13,29 +13,34 @@ private:
 	Animation koopaStaticAnimation;
 	Animation koopaRollingAnimation;
 
-	Body* body;
-
 	World* world;
 
 	int health;
 
-	bool isDead;
+	bool isInShell;
 
 	float invincibleTime;
-	float velocityX;
+
+	float shellTime;
+
+	float flickeringTime;
 
 public:
 	Koopa();
 	~Koopa();
+
+	Body* body;
+	float velocityX;
+
 	void Create(World* world, Texture* goombaTexture, float x, float y);
 
 	void Render(SpriteBatch* batch);
 
 	void Update(float dt);
 
-	void OnHitOnTheHead();
+	void OnHitOnTheHead(bool right);
 
 	void ChangeDirection();
 
-	bool IsDead();
+	bool IsInShell();
 };

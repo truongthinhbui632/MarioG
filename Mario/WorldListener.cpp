@@ -17,6 +17,15 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 {
 	switch (bodyA->categoryBits + bodyB->categoryBits)
 	{
+	case PLAYER_BIT + DEADPLATFORM_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->DamagePlayer(true);
+		}
+		break;
+	}
 	case PLAYER_BIT + COINBRICK_BIT:
 	{
 		if (bodyB->categoryBits == COINBRICK_BIT)
@@ -161,16 +170,36 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 		{
 			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y < bodyB->GetPosition().y)
 			{
+				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
 				Player* player = (Player*)(bodyA->GetExtra());
-				player->DamagePlayer();
+
+				//if koopa is in shell state, player pick up koopa
+				if (koopa->IsInShell())
+				{
+					player->PickUpKoopa(koopa);
+				}
+				else
+				{
+					player->DamagePlayer();
+				}
 			}
 		}
 		else if (bodyB->categoryBits == PLAYER_BIT)
 		{
 			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y > bodyB->GetPosition().y)
 			{
+				Koopa* koopa = (Koopa*)(bodyA->GetExtra());
 				Player* player = (Player*)(bodyB->GetExtra());
-				player->DamagePlayer();
+
+				//if koopa is in shell state, player pick up koopa
+				if (koopa->IsInShell())
+				{
+					player->PickUpKoopa(koopa);
+				}
+				else
+				{
+					player->DamagePlayer();
+				}
 			}
 		}
 		break;
@@ -218,6 +247,15 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 {
 	switch (bodyA->categoryBits * bodyB->categoryBits)
 	{
+	case PLAYER_BIT * DEADPLATFORM_BIT:
+	{
+		if (bodyA->categoryBits == PLAYER_BIT)
+		{
+			Player* player = (Player*)(bodyA->GetExtra());
+			player->DamagePlayer(true);
+		}
+		break;
+	}
 	case GOOMBA_BIT* PLAYER_BIT:
 	{
 		if (bodyA->categoryBits == PLAYER_BIT)
@@ -264,16 +302,36 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 		{
 			if (collisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y < bodyB->GetPosition().y)
 			{
+				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
 				Player* player = (Player*)(bodyA->GetExtra());
-				player->DamagePlayer();
+
+				//if koopa is in shell state, player pick up koopa
+				if (koopa->IsInShell())
+				{
+					player->PickUpKoopa(koopa);
+				}
+				else
+				{
+					player->DamagePlayer();
+				}
 			}
 		}
 		else if (bodyB->categoryBits == PLAYER_BIT)
 		{
 			if (collisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y > bodyB->GetPosition().y)
 			{
+				Koopa* koopa = (Koopa*)(bodyA->GetExtra());
 				Player* player = (Player*)(bodyB->GetExtra());
-				player->DamagePlayer();
+
+				//if koopa is in shell state, player pick up koopa
+				if (koopa->IsInShell())
+				{
+					player->PickUpKoopa(koopa);
+				}
+				else
+				{
+					player->DamagePlayer();
+				}
 			}
 		}
 		break;
@@ -469,19 +527,19 @@ void WorldListener::OnSersorEnter(Body* bodyA, Body* bodyB)
 	{
 		if (bodyA->categoryBits == KOOPA_BIT)
 		{
-			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
-			koopa->OnHitOnTheHead();
 			Player* player = (Player*)(bodyB->GetExtra());
 			player->JumpWhenKillEnemies();
+			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
+			koopa->OnHitOnTheHead(player->GetPosition().x < koopa->GetPosition().x);
 		}
 		else
 		{
 			if (bodyB->categoryBits == KOOPA_BIT)
 			{
-				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
-				koopa->OnHitOnTheHead();
 				Player* player = (Player*)(bodyA->GetExtra());
 				player->JumpWhenKillEnemies();
+				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
+				koopa->OnHitOnTheHead(player->GetPosition().x < koopa->GetPosition().x);
 			}
 		}
 		break;
@@ -567,18 +625,18 @@ void WorldListener::OnSersorOverlaying(Body* bodyA, Body* bodyB)
 		if (bodyA->categoryBits == KOOPA_BIT)
 		{
 			Koopa* koopa = (Koopa*)(bodyA->GetExtra());
-			koopa->OnHitOnTheHead();
 			Player* player = (Player*)(bodyB->GetExtra());
 			player->JumpWhenKillEnemies();
+			koopa->OnHitOnTheHead(player->GetPosition().x < koopa->GetPosition().x);
 		}
 		else
 		{
 			if (bodyB->categoryBits == KOOPA_BIT)
 			{
 				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
-				koopa->OnHitOnTheHead();
 				Player* player = (Player*)(bodyA->GetExtra());
 				player->JumpWhenKillEnemies();
+				koopa->OnHitOnTheHead(player->GetPosition().x < koopa->GetPosition().x);
 			}
 		}
 		break;
