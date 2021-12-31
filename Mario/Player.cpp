@@ -19,6 +19,7 @@ void Player::Create(World* world, float x, float y)
 	isDead = false;
 	isBig = false;
 	isRacoon = false;
+	isTailAtk = false;
 	isGrounded = true;
 	jumpTime = 0;
 	timeToDie = 0;
@@ -52,6 +53,7 @@ void Player::Create(World* world, float x, float y)
 	racoonStandingAnimation.AddRegion(p.GetRegion("racoonstanding"));
 	racoonMovingAnimation.AddRegion(p.GetRegion("racoonrunning"));
 	racoonFlyingAnimation.AddRegion(p.GetRegion("racoonflying"));
+	racoonTailAtkAnimation.AddRegion(p.GetRegion("racoontailatk"));
 	racoonCarryingAnimation.AddRegion(p.GetRegion("racooncarrying"));
 	racoonCarryingRunningAnimation.AddRegion(p.GetRegion("racooncarryingrunning"));
 
@@ -151,6 +153,26 @@ void Player::HandleInput()
 		koopa->OnHitOnTheHead(!IsFlipX());
 		koopa = nullptr;
 	}
+	//falling 
+	if (Input::GetKey(DIK_X) && isRacoon)
+	{
+		if (isGrounded)
+			return;
+		else
+		{
+			mainBody->SetVelocity(mainBody->GetVelocity().x, -0.5);
+		}
+	}
+	//tail atk
+	if (Input::GetKey(DIK_B) && isRacoon)
+	{
+		if (isGrounded)
+		{
+			isTailAtk = true;
+		}
+	}
+	else
+		isTailAtk = false;
 }
 
 void Player::Render(SpriteBatch *batch)
@@ -214,6 +236,10 @@ void Player::Update(float dt)
 			if (isRacoon)
 			{
 				SetRegion(*racoonStandingAnimation.Next(dt));
+				if (isTailAtk)
+				{
+					SetRegion(*racoonTailAtkAnimation.Next(dt));
+				}
 			}
 			else
 			{
@@ -380,6 +406,11 @@ void Player::PickUpKoopa(Koopa* koopa)
 bool Player::IsDead()
 {
 	return isDead;
+}
+
+bool Player::TailAtk()
+{
+	return isTailAtk;
 }
 
 void Player::OnGrounded()

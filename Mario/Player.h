@@ -33,6 +33,7 @@ private:
 	Animation racoonStandingAnimation;
 	Animation racoonMovingAnimation;
 	Animation racoonFlyingAnimation;
+	Animation racoonTailAtkAnimation;
 	Animation racoonCarryingAnimation;
 	Animation racoonCarryingRunningAnimation;
 	Animation marioDeadAnimation;
@@ -41,6 +42,7 @@ private:
 	bool isRacoon;
 	
 	bool isDead;
+	bool isTailAtk;
 
 	float timeToDie;
 	float jumpTime;
@@ -81,6 +83,8 @@ public:
 	void SetOnPortal(bool onPortal);
 
 	bool IsDead();
+
+	bool TailAtk();
 
 	void PickUpKoopa(Koopa *koopa);
 

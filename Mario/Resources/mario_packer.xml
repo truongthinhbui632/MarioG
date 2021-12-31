@@ -48,6 +48,12 @@
  <rect left="243" top = "634" width = "21" height="28" />
 </racoonstanding>
 
+<racoontailatk>
+ <rect left="243" top = "634" width = "21" height="28" />
+ <rect left="61" top = "634" width = "23" height="28" />
+ <rect left="182" top = "634" width = "21" height="28" />
+</racoontailatk>
+
 <racoonrunning>
  <rect left="243" top = "634" width = "21" height="28" />
  <rect left="272" top = "634" width = "22" height="28" />

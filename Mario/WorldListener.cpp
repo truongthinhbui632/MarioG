@@ -131,7 +131,13 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y < bodyB->GetPosition().y)
 			{
 				Player* player = (Player*)(bodyA->GetExtra());
-				player->DamagePlayer();
+				Goomba* goomba = (Goomba*)(bodyB->GetExtra());
+				if (player->TailAtk())
+				{
+					goomba->OnHitOnTheHead();
+				}
+				else
+					player->DamagePlayer();
 			}
 		}
 		else if (bodyB->categoryBits == PLAYER_BIT)
@@ -139,7 +145,13 @@ void WorldListener::OnCollisionEnter(Body* bodyA, Body* bodyB, const Vector2& Co
 			if (CollisionDirection.y == NOT_COLLIDED || bodyA->GetPosition().y > bodyB->GetPosition().y)
 			{
 				Player* player = (Player*)(bodyB->GetExtra());
-				player->DamagePlayer();
+				Goomba* goomba = (Goomba*)(bodyA->GetExtra());
+				if (player->TailAtk())
+				{
+					goomba->OnHitOnTheHead();
+				}
+				else
+					player->DamagePlayer();
 			}
 		}
 		break;
@@ -304,7 +316,6 @@ void  WorldListener::OnColliding(Body* bodyA, Body* bodyB, const Vector2& collis
 			{
 				Koopa* koopa = (Koopa*)(bodyB->GetExtra());
 				Player* player = (Player*)(bodyA->GetExtra());
-
 				//if koopa is in shell state, player pick up koopa
 				if (koopa->IsInShell())
 				{
