@@ -15,6 +15,7 @@
 #include "Coin.h"
 #include "CoinBrick.h"
 #include "Portal.h"
+#include "HUD.h"
 
 class PlayScene: public Scene
 {
@@ -50,6 +51,8 @@ private:
 	std::vector<CoinBrick*> coinBricks;
 	Portal portal;
 	Vector2 portalOutPosition;
+
+	HUD hud;
 
 public:
 	PlayScene();

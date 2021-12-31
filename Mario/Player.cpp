@@ -93,20 +93,54 @@ void Player::Create(World* world, float x, float y)
 }
 
 
-void Player::HandleInput()
+void Player::HandleInput(float dt)
 {
 	if (isDead || timeToDie > 0) return;
 
 	//Move right
 	if (Input::GetKey(DIK_RIGHT))
 	{
-		mainBody->SetVelocity(7, mainBody->GetVelocity().y);
+		UpdatePower(dt);
+
+		if (power < MAXPOWER)
+		{
+			if (xVelocity < XMINVELOCITY)
+			{
+				xVelocity = XMINVELOCITY;
+			}
+
+			xVelocity += dt;
+
+			if (xVelocity > XMAXVELOCITY)
+			{
+				xVelocity = XMAXVELOCITY;
+			}
+		}
+
+		mainBody->SetVelocity(xVelocity, mainBody->GetVelocity().y);
 	}
 
 	//move left
 	if (Input::GetKey(DIK_LEFT))
 	{
-		mainBody->SetVelocity(-7, mainBody->GetVelocity().y);
+		if (power < MAXPOWER)
+		{
+			if (xVelocity < XMINVELOCITY)
+			{
+				xVelocity = XMINVELOCITY;
+			}
+
+			xVelocity += dt;
+
+			if (xVelocity > XMAXVELOCITY)
+			{
+				xVelocity = XMAXVELOCITY;
+			}
+		}
+
+		//power = (int)((xVelocity - XMINVELOCITY) / ((XMAXVELOCITY - XMINVELOCITY) / 5.0f));
+
+		mainBody->SetVelocity(-xVelocity, mainBody->GetVelocity().y);
 	}
 
 	////hold-jump 
@@ -144,7 +178,26 @@ void Player::HandleInput()
 
 	if (Input::GetKey(DIK_UP) && isRacoon)
 	{
-		mainBody->SetVelocity(mainBody->GetVelocity().x, 3);
+		UpdatePower(dt);
+
+		if (power < MAXPOWER)
+		{
+			if (yVelocity < YFLYINGMINVELOCITY)
+			{
+				yVelocity = YFLYINGMINVELOCITY;
+			}
+
+			yVelocity += dt * 2;
+
+			if (yVelocity > YFLYINGMAXVELOCITY)
+			{
+				yVelocity = YFLYINGMAXVELOCITY;
+			}
+		}
+
+		//power = (int)((yVelocity - YFLYINGMINVELOCITY) / ((YFLYINGMAXVELOCITY - YFLYINGMINVELOCITY) / 5.0f));
+
+		mainBody->SetVelocity(mainBody->GetVelocity().x, yVelocity);
 	}
 
 	//Shoot koopa
@@ -183,10 +236,24 @@ void Player::Render(SpriteBatch *batch)
 	batch->Draw(*this);
 }
 
+void Player::UpdatePower(float dt)
+{
+	power += 4 * dt;
+	if (power > MAXPOWER)
+	{
+		power = MAXPOWER;
+	}
+}
+
 
 void Player::Update(float dt)
 {
 	if (isDead) return;
+
+	if (mainBody->GetVelocity().y < -10)
+	{
+		mainBody->SetVelocity(mainBody->GetVelocity().x, -10);
+	}
 
 	if (timeToDie > 0)
 	{
@@ -210,9 +277,17 @@ void Player::Update(float dt)
 		}
 	}
 
+	if (mainBody->GetVelocity().x == 0 && isGrounded)
+	{
+		xVelocity = 0;
+		power = 0;
+	}
+
 	//Animations
 	if (isGrounded)
 	{
+		yVelocity = 0;
+
 		if (mainBody->GetVelocity().x != 0)
 		{
 			if (isRacoon)
@@ -446,6 +521,11 @@ void Player::BecomRacoon()
 void Player::SetOnPortal(bool onPortal)
 {
 	isOnPortal = onPortal;
+}
+
+int Player::GetPower()
+{
+	return (int)power;
 }
 
 void Player::Release()

@@ -66,7 +66,7 @@ void BonusScene1::Create()
 void BonusScene1::HandlePhysics(float dt)
 {
 	//handle input of player
-	player.HandleInput();
+	player.HandleInput(dt);
 
 	if (Input::GetKeyDown(DIK_UP) && player.isOnPortal)
 	{

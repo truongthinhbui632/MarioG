@@ -152,6 +152,7 @@
     <ClInclude Include="CollisionBit.h" />
     <ClInclude Include="DeadPlatform.h" />
     <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="HUD.h" />
     <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="CoinBrick.cpp" />
     <ClCompile Include="DeadPlatform.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="HUD.cpp" />
     <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />

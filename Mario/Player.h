@@ -7,6 +7,11 @@
 #include "Koopa.h"
 
 #define PLAYERINVINCIBLETIME 0.5
+#define XMINVELOCITY 5
+#define XMAXVELOCITY 7
+#define YFLYINGMAXVELOCITY 3
+#define YFLYINGMINVELOCITY 2
+#define MAXPOWER 5
 
 //Main character
 class Player : public Sprite
@@ -46,7 +51,9 @@ private:
 
 	float timeToDie;
 	float jumpTime;
-	float power;
+	float power = 0;
+	float xVelocity;
+	float yVelocity;
 	float invincibleTime;
 	float flickeringTime;
 	bool isGrounded;
@@ -63,7 +70,7 @@ public:
 
 	void SetBodyPosition(float x, float y);
 
-	void HandleInput();
+	void HandleInput(float dt);
 
 	void Render(SpriteBatch *batch);
 
@@ -82,11 +89,15 @@ public:
 
 	void SetOnPortal(bool onPortal);
 
+	int GetPower();
+
 	bool IsDead();
 
 	bool TailAtk();
 
 	void PickUpKoopa(Koopa *koopa);
+
+	void UpdatePower(float dt);
 
 	void Release();
 };

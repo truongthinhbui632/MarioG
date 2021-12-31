@@ -140,12 +140,14 @@ void PlayScene::Create()
 	{
 		portalOutPosition.Set(rect->x, rect->y);
 	}
+
+	hud.Create(&objectsTexture, cam.GetPosition().x - 50, cam.GetPosition().y);
 }
 
 void PlayScene::HandlePhysics(float dt)
 {
 	//handle input of player
-	player.HandleInput();
+	player.HandleInput(dt);
 
 	world.Update(dt);
 }
@@ -203,6 +205,8 @@ void  PlayScene::Render()
 
 #endif
 
+	hud.Render(batch);
+
 	//end drawing
 	batch->End();
 }
@@ -212,6 +216,8 @@ void PlayScene::Update(float dt)
 {
 
 	HandlePhysics(dt);
+
+	hud.UpdatePowerFiller(player.GetPower());
 
 	if (Input::GetKeyDown(DIK_P))
 	{
@@ -299,6 +305,9 @@ void PlayScene::Update(float dt)
 		Koopa* koopa = koopas[i];
 		koopa->Update(dt);
 	}
+
+	//Update HUD
+	hud.UpdatePosition(cam.GetPosition().x, cam.GetPosition().y - 440/2);
 
 	//RENDER
 	Render();

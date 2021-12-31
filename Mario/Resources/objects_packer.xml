@@ -28,3 +28,11 @@
 <leaf>
  <rect left="300" top = "208" width = "16" height="14" />
 </leaf>
+
+<powerholder>
+ <rect left="300" top = "153" width = "16" height="16" />
+</powerholder>
+
+<powerholderfiller>
+ <rect left="318" top = "153" width = "16" height="16" />
+</powerholderfiller>
