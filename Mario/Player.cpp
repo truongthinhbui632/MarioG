@@ -207,15 +207,12 @@ void Player::HandleInput(float dt)
 		koopa = nullptr;
 	}
 	//falling 
-	if (Input::GetKey(DIK_X) && isRacoon)
+	if (Input::GetKey(DIK_X) && isRacoon && !isGrounded)
 	{
-		if (isGrounded)
-			return;
-		else
-		{
-			mainBody->SetVelocity(mainBody->GetVelocity().x, -0.5);
-		}
+		UpdatePower(-dt);
+		mainBody->SetVelocity(mainBody->GetVelocity().x, -0.5);
 	}
+
 	//tail atk
 	if (Input::GetKey(DIK_B) && isRacoon)
 	{
@@ -250,9 +247,9 @@ void Player::Update(float dt)
 {
 	if (isDead) return;
 
-	if (mainBody->GetVelocity().y < -10)
+	if (mainBody->GetVelocity().y < -8)
 	{
-		mainBody->SetVelocity(mainBody->GetVelocity().x, -10);
+		mainBody->SetVelocity(mainBody->GetVelocity().x, -8);
 	}
 
 	if (timeToDie > 0)
